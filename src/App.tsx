@@ -78,6 +78,7 @@ function App() {
           {data.map((post: any) => (
             <PostCard
               key={post.id}
+              id={post.id}
               title={post.title}
               image={post.thumbnail_url}
               author={post.author.name}

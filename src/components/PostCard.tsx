@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 type PostCardProps = { 
@@ -7,6 +8,7 @@ type PostCardProps = {
   date: string;
   categories: CategoryProp[];
   text: string;
+  id: string;
 }
 
 type CategoryProp = {
@@ -83,7 +85,7 @@ const CardTags = styled.div`
   }
 `;
 
-const PostCard = ({ title, image, author, date, categories, text }: PostCardProps) => {
+const PostCard = ({ title, image, author, date, categories, text, id }: PostCardProps) => {
   const formattedDate = new Date(date).toLocaleDateString("en-BR", {
     month: "short",
     day: "2-digit",
@@ -91,6 +93,7 @@ const PostCard = ({ title, image, author, date, categories, text }: PostCardProp
   });
 
   return (
+    <Link to={`/posts/${id}`} style={{ textDecoration: "none" }}>
     <Card>
       <CardImage>
         <img src={image} alt="Article" />
@@ -114,6 +117,7 @@ const PostCard = ({ title, image, author, date, categories, text }: PostCardProp
         </CardTags>
       </CardContent>
     </Card>
+    </Link>
   );
 };
 

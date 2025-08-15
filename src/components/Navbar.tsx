@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import logo from "../assets/logo.png";
 import SearchBar from "./SearchBar";
+import { Link } from "react-router-dom";
 
 const Container = styled.header`
   height: 70px;
@@ -30,10 +31,12 @@ const Tagline = styled.span`
 const Navbar = () => {
   return (
     <Container>
-      <Brand>
-        <Logo src={logo} alt="Dentsu logo" />
-        <Tagline>world services</Tagline>
-      </Brand>
+      <Link to={`/`} style={{ textDecoration: "none", color: "inherit" }}>
+        <Brand>
+          <Logo src={logo} alt="logo" />
+          <Tagline>world services</Tagline>
+        </Brand>
+      </Link>
       <SearchBar />
     </Container>
   );
