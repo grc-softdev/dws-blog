@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import type { CategoryProp } from "./PostList";
 
 type PostCardProps = { 
   title: string; 
@@ -10,14 +9,20 @@ type PostCardProps = {
   text: string;
 }
 
+type CategoryProp = {
+  name: string;
+  id: string;
+};
+
 const Card = styled.div`
   background: #fff;
   border-radius: 12px;
+  border: 0.75px solid #e0e0e0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   width: 314px;
-  height: 425px;
+  height: auto;
 `;
 
 const CardImage = styled.div`
@@ -34,8 +39,7 @@ const CardContent = styled.div`
 `;
 
 const CardMeta = styled.div`
-  display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: start;
   font-size: var(--body-small-size);
   color: var(--gray-medium);
@@ -67,7 +71,6 @@ const CardDescription = styled.p`
 `;
 
 const CardTags = styled.div`
-  display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 
@@ -76,7 +79,7 @@ const CardTags = styled.div`
     color: var(--gray-dark);
     font-size: var(--caption-size);
     padding: 0.5rem 0.75rem;
-    border-radius: 16px;
+    border-radius: 42px;
   }
 `;
 

@@ -46,21 +46,24 @@
   --semibold: #{$semibold};
 }
 
-
-* {
-  margin: 0 auto;
-  padding: 0;
-}
-
 html, body {
   font-family: var(--font-family);
-  background: linear-gradient(
-    135deg,
-    var(--cyan-light) 0%,
-    var(--pink-light) 100%
+  background: radial-gradient(
+    circle at center,
+    white 0%,
+    white 40%,
+    transparent 70%
+  ),
+  linear-gradient(
+    to top right,
+    rgba(191, 233, 255, 1) 0%,
+    rgba(255, 204, 230, 1) 100% 
   );
+background-attachment: fixed;
   color: var(--gray-darkest);
 }
+
+
 
 h1 {
   font-size: var(--h1-size);
