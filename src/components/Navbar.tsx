@@ -18,6 +18,7 @@ const Brand = styled.div`
 `;
 
 const Logo = styled.img`
+margin-left: -20px;
   width: 150px;
   height: auto;
 `;

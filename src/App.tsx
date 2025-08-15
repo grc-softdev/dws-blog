@@ -3,58 +3,63 @@ import styled from "styled-components";
 import Navbar from "./components/Navbar";
 import SideComponent from "./components/SideComponent";
 import PostCard from "./components/PostCard";
+import Sort from "./components/Sort";
+import { useState, useMemo } from "react";
 
 function App() {
   const PageWrapper = styled.main`
-  min-height: 100vh;
+    min-height: 100vh;
+    margin-left: 16px;
+    margin-right: 16px;
 
-  /* Mobile */
-  margin-left: 16px;
-  margin-right: 16px;
+    @media (min-width: 768px) {
+      margin-left: 32px;
+      margin-right: 32px;
+    }
 
-  /* Tablet */
-  @media (min-width: 768px) {
-    margin-left: 32px;
-    margin-right: 32px;
-  }
+    @media (min-width: 1200px) {
+      margin-left: 56px;
+      margin-right: 56px;
+    }
+  `;
 
-  /* Desktop */
-  @media (min-width: 1200px) {
-    margin-left: 56px;
-    margin-right: 56px;
-  }
-`;
+  const Header = styled.section`
+  display:  flex;
+  align-items: center;
+  justify-content: space-between;
+  `;
 
   const Sections = styled.section`
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px; /* gutter mobile */
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
 
-  @media (min-width: 768px) {
-    gap: 20px; /* gutter tablet */
-  }
+    @media (min-width: 768px) {
+      gap: 20px;
+    }
 
-  @media (min-width: 1200px) {
-    gap: 24px; /* gutter desktop */
-  }
-`;
+    @media (min-width: 1200px) {
+      gap: 24px;
+    }
+  `;
 
   const Container = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
 
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-  }
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
 
-  @media (min-width: 1200px) {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-`;
+    @media (min-width: 1200px) {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+  `;
+  const [order, setOrder] = useState<"newest" | "oldest">("newest");
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["posts"],
@@ -65,17 +70,32 @@ function App() {
     },
   });
 
+  const sortedPosts = useMemo(() => {
+    if (!data) return [];
+    return [...data].sort((a, b) => {
+      if (order === "newest") {
+        return a.title.localeCompare(b.title);
+      } else {
+        return b.title.localeCompare(a.title);
+      }
+    });
+  }, [data, order]);
+
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error: {(error as Error).message}</p>;
 
   return (
     <PageWrapper>
       <Navbar />
+      <Header>
       <h2>DWS Blog</h2>
+      <Sort order={order} onSortChange={setOrder} />
+      </Header>
+
       <Sections>
         <SideComponent />
         <Container>
-          {data.map((post: any) => (
+          {sortedPosts.map((post) => (
             <PostCard
               key={post.id}
               id={post.id}
