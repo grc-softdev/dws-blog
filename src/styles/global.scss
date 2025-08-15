@@ -1,0 +1,93 @@
+@use './variables' as *;
+
+:root {
+  /* Grays */
+  --gray-lightest: #{$gray-lightest};
+  --gray-extra-light: #{$gray-extra-light};
+  --gray-light: #{$gray-light};
+  --gray-medium: #{$gray-medium};
+  --gray-dark: #{$gray-dark};
+  --gray-extra-dark: #{$gray-extra-dark};
+  --gray-darkest: #{$gray-darkest};
+
+  /* Navy */
+  --navy-light: #{$navy-light};
+  --navy-medium: #{$navy-medium};
+  --navy-dark: #{$navy-dark};
+
+  /* Pink */
+  --pink-light: #{$pink-light};
+  --pink-medium: #{$pink-medium};
+  --pink-dark: #{$pink-dark};
+
+  /* Cyan */
+  --cyan-light: #{$cyan-light};
+  --cyan-medium: #{$cyan-medium};
+  --cyan-dark: #{$cyan-dark};
+
+  /* Typography */
+  --font-family: #{$font-family};
+
+  /* Font sizes */
+  --h1-size: #{$h1-size};
+  --h2-size: #{$h2-size};
+  --h3-size: #{$h3-size};
+  --body-large-size: #{$body-large-size};
+  --body-small-size: #{$body-small-size};
+  --caption-size: #{$caption-size};
+
+  /* Line heights */
+  --heading-line-height: #{$heading-line-height};
+  --body-line-height: #{$body-line-height};
+
+  /* Font weights */
+  --bold: #{$bold};
+  --regular: #{$regular};
+  --semibold: #{$semibold};
+}
+
+
+* {
+  margin: 0 auto;
+  padding: 0;
+}
+
+html, body {
+  font-family: var(--font-family);
+  background: linear-gradient(
+    135deg,
+    var(--cyan-light) 0%,
+    var(--pink-light) 100%
+  );
+  color: var(--gray-darkest);
+}
+
+h1 {
+  font-size: var(--h1-size);
+  line-height: var(--heading-line-height);
+  font-weight: var(--bold);
+}
+
+h2 {
+  font-size: var(--h2-size);
+  line-height: var(--heading-line-height);
+  font-weight: var(--bold);
+}
+
+h3 {
+  font-size: var(--h3-size);
+  line-height: var(--heading-line-height);
+  font-weight: var(--bold);
+}
+
+p {
+  font-size: var(--body-large-size);
+  line-height: var(--body-line-height);
+  font-weight: var(--regular);
+}
+
+small, .caption {
+  font-size: var(--caption-size);
+  line-height: var(--heading-line-height);
+  font-weight: var(--regular);
+}

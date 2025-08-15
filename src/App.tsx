@@ -1,8 +1,18 @@
-import "./App.css";
 import { useQuery } from "@tanstack/react-query";
-
+import PostList from "./components/PostList";
+import styled from "styled-components";
+import Navbar from "./components/Navbar";
+import SideComponent from "./components/SideComponent";
 
 function App() {
+  const PageWrapper = styled.div`
+    min-height: 100vh;
+    background: linear-gradient(
+      135deg,
+      rgba(191, 233, 255, 1) 0%,
+      rgba(255, 204, 230, 1) 100%
+    );
+  `;
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["posts"],
@@ -18,17 +28,25 @@ function App() {
 
   return (
     <div>
-    <h1>Post List</h1>
-    <ul>
-      {data.map((post: any) => (
-        <li key={post.id}>
-          <strong>{post.title}</strong>
-          <p>{post.body}</p>
-        </li>
-      ))}
-    </ul>
-  </div>
-  )
+      <Navbar />
+      <div>
+        <SideComponent />
+        <PageWrapper>
+          {data.map((post: any) => (
+            <PostList
+              key={post.id}
+              title={post.title}
+              image={post.thumbnail_url}
+              author={post.author.name}
+              date={post.createdAt}
+              categories={post.categories}
+              text={post.content}
+            />
+          ))}
+        </PageWrapper>
+      </div>
+    </div>
+  );
 }
 
 export default App;
