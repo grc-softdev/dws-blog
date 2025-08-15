@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { FaSearch } from "react-icons/fa";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
+import { useDebounce } from "../hooks/useDebounce";
 
 type SearchBarProps = {
   onSearchChange: (v: string) => void;
@@ -48,25 +49,18 @@ const SearchButton = styled.button`
   }
 `;
 
-export default function SearchBar({ onSearchChange, searchTerm }: SearchBarProps) {
-  const debounceRef = useRef<NodeJS.Timeout | null>(null);
+export default function SearchBar({
+  onSearchChange,
+  searchTerm,
+}: SearchBarProps) {
+  const debounced = useDebounce(searchTerm, 500);
 
-  
   useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-
-    debounceRef.current = setTimeout(() => {
-      onSearchChange(searchTerm);
-    }, 500);
-
-    return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current);
-    };
-  }, [searchTerm, onSearchChange]);
+    onSearchChange(debounced);
+  }, [debounced, onSearchChange]);
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (debounceRef.current) clearTimeout(debounceRef.current);
     onSearchChange(searchTerm);
   };
 

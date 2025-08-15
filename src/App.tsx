@@ -6,8 +6,7 @@ import PostCard from "./components/PostCard";
 import Sort from "./components/Sort";
 import { useState, useMemo } from "react";
 
-function App() {
-  const PageWrapper = styled.main`
+const PageWrapper = styled.main`
     min-height: 100vh;
     margin-left: 16px;
     margin-right: 16px;
@@ -56,6 +55,8 @@ function App() {
       gap: 24px;
     }
   `;
+
+function App() {
 
   const [order, setOrder] = useState<"newest" | "oldest">("newest");
   const [searchTerm, setSearchTerm] = useState("");
