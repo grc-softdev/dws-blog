@@ -1,5 +1,10 @@
 import styled from "styled-components";
 import { FaSearch } from "react-icons/fa";
+import { useEffect, useState } from "react";
+
+type SearchBarProps = {
+  onSearchChange: (v: string) => void
+}
 
 const SearchContainer = styled.div`
   display: flex;
@@ -42,13 +47,31 @@ const SearchButton = styled.button`
   }
 `;
 
-export default function SearchBar() {
+export default function SearchBar({ onSearchChange }: SearchBarProps) {
+  const [value, setValue] = useState("");
+
+  useEffect(() => {
+    const id = setTimeout(() => onSearchChange(value), 250); // debounce
+    return () => clearTimeout(id);
+  }, [value, onSearchChange]);
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSearchChange(value);
+  };
   return (
+    <form onSubmit={submit}>
     <SearchContainer>
-      <SearchInput type="text" placeholder="Search" />
-      <SearchButton>
+      <SearchInput
+        type="text"
+        placeholder="Search"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <SearchButton type="submit">
         <FaSearch />
       </SearchButton>
     </SearchContainer>
+  </form>
   );
 }

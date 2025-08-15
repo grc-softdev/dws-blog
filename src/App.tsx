@@ -16,7 +16,6 @@ function App() {
       margin-left: 32px;
       margin-right: 32px;
     }
-
     @media (min-width: 1200px) {
       margin-left: 56px;
       margin-right: 56px;
@@ -24,9 +23,9 @@ function App() {
   `;
 
   const Header = styled.section`
-  display:  flex;
-  align-items: center;
-  justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   `;
 
   const Sections = styled.section`
@@ -38,7 +37,6 @@ function App() {
     @media (min-width: 768px) {
       gap: 20px;
     }
-
     @media (min-width: 1200px) {
       gap: 24px;
     }
@@ -53,13 +51,21 @@ function App() {
       grid-template-columns: repeat(2, 1fr);
       gap: 20px;
     }
-
     @media (min-width: 1200px) {
       grid-template-columns: repeat(3, 1fr);
       gap: 24px;
     }
   `;
+
   const [order, setOrder] = useState<"newest" | "oldest">("newest");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedAuthor, setSelectedAuthor] = useState<string | null>(null);
+  
+  const handleApplyFilters = (category: string | null, author: string | null) => {
+    setSelectedCategory(category);
+    setSelectedAuthor(author);
+  };
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["posts"],
@@ -70,32 +76,58 @@ function App() {
     },
   });
 
-  const sortedPosts = useMemo(() => {
+
+
+  const filteredAndSortedPosts = useMemo(() => {
     if (!data) return [];
-    return [...data].sort((a, b) => {
-      if (order === "newest") {
-        return a.title.localeCompare(b.title);
-      } else {
-        return b.title.localeCompare(a.title);
-      }
+
+    let filtered = data;
+
+    const q = searchTerm.trim().toLowerCase();
+    if (q) {
+    filtered = filtered.filter((post: any) => {
+      const title = (post.title ?? "").toLowerCase();
+      const content = (post.content ?? "").toLowerCase();
+      const authorName = (post.author?.name ?? "").toLowerCase();
+      return (
+        title.includes(q) ||
+        content.includes(q) ||
+        authorName.includes(q)
+      );
     });
-  }, [data, order]);
+  }
+
+    if (selectedCategory) {
+      filtered = data.filter((post) =>
+        post.categories.some((cat) => cat.id === selectedCategory)
+      );
+    }
+
+    if (selectedAuthor) {
+      filtered = filtered.filter((post) => post.author.id === selectedAuthor);
+    }
+
+    return [...filtered].sort((a, b) =>
+      order === "newest"
+        ? a.title.localeCompare(b.title)
+        : b.title.localeCompare(a.title)
+    );
+  }, [data, order, selectedCategory, selectedAuthor, searchTerm]);
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error: {(error as Error).message}</p>;
 
   return (
     <PageWrapper>
-      <Navbar />
+      <Navbar onSearchChange={setSearchTerm}/>
       <Header>
-      <h2>DWS Blog</h2>
-      <Sort order={order} onSortChange={setOrder} />
+        <h2>DWS Blog</h2>
+        <Sort order={order} onSortChange={setOrder} />
       </Header>
-
       <Sections>
-        <SideComponent />
+        <SideComponent onApplyFilters={handleApplyFilters}/>
         <Container>
-          {sortedPosts.map((post) => (
+          {filteredAndSortedPosts.map((post) => (
             <PostCard
               key={post.id}
               id={post.id}
