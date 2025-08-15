@@ -76,23 +76,20 @@ function App() {
     },
   });
 
-
-
   const filteredAndSortedPosts = useMemo(() => {
     if (!data) return [];
-
     let filtered = data;
 
-    const q = searchTerm.trim().toLowerCase();
-    if (q) {
+    const query = searchTerm.trim().toLowerCase();
+    if (query) {
     filtered = filtered.filter((post: any) => {
       const title = (post.title ?? "").toLowerCase();
       const content = (post.content ?? "").toLowerCase();
       const authorName = (post.author?.name ?? "").toLowerCase();
       return (
-        title.includes(q) ||
-        content.includes(q) ||
-        authorName.includes(q)
+        title.includes(query) ||
+        content.includes(query) ||
+        authorName.includes(query)
       );
     });
   }
@@ -119,7 +116,7 @@ function App() {
 
   return (
     <PageWrapper>
-      <Navbar onSearchChange={setSearchTerm}/>
+      <Navbar onSearchChange={setSearchTerm} searchTerm={searchTerm}/>
       <Header>
         <h2>DWS Blog</h2>
         <Sort order={order} onSortChange={setOrder} />

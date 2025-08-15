@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { FaSearch } from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
 type SearchBarProps = {
-  onSearchChange: (v: string) => void
-}
+  onSearchChange: (v: string) => void;
+  searchTerm: string;
+};
 
 const SearchContainer = styled.div`
   display: flex;
@@ -47,31 +48,41 @@ const SearchButton = styled.button`
   }
 `;
 
-export default function SearchBar({ onSearchChange }: SearchBarProps) {
-  const [value, setValue] = useState("");
+export default function SearchBar({ onSearchChange, searchTerm }: SearchBarProps) {
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
+  
   useEffect(() => {
-    const id = setTimeout(() => onSearchChange(value), 250); // debounce
-    return () => clearTimeout(id);
-  }, [value, onSearchChange]);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    debounceRef.current = setTimeout(() => {
+      onSearchChange(searchTerm);
+    }, 500);
+
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [searchTerm, onSearchChange]);
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSearchChange(value);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    onSearchChange(searchTerm);
   };
+
   return (
     <form onSubmit={submit}>
-    <SearchContainer>
-      <SearchInput
-        type="text"
-        placeholder="Search"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      />
-      <SearchButton type="submit">
-        <FaSearch />
-      </SearchButton>
-    </SearchContainer>
-  </form>
+      <SearchContainer>
+        <SearchInput
+          type="text"
+          placeholder="Search"
+          value={searchTerm}
+          onChange={(e) => onSearchChange(e.target.value)}
+        />
+        <SearchButton type="submit">
+          <FaSearch />
+        </SearchButton>
+      </SearchContainer>
+    </form>
   );
 }
