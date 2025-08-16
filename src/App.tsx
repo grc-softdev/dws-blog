@@ -6,60 +6,89 @@ import PostCard from "./components/PostCard";
 import Sort from "./components/Sort";
 import { useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
-import {
-  setCategory,
-  setAuthor,
-} from "./store/filtersSlice";
+import { setCategory, setAuthor } from "./store/filtersSlice";
+import { Dropdown } from "./components/ui/Dropdown";
+import Categories from "./components/Categories";
+import Authors from "./components/Authors";
+
+type Post = {
+  title: string;
+  image: string;
+  author: string;
+  date: string;
+  category: string;
+  content: string;
+};
+
+const TopBar = styled.section`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const RightArea = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+const MobileFilters = styled.div`
+  display: flex;
+  gap: 8px;
+  @media (min-width: 768px) {
+    display: none;
+  }
+`;
 
 const PageWrapper = styled.main`
-    min-height: 100vh;
-    margin-left: 16px;
-    margin-right: 16px;
+  min-height: 100vh;
+  margin-left: 16px;
+  margin-right: 16px;
 
-    @media (min-width: 768px) {
-      margin-left: 32px;
-      margin-right: 32px;
-    }
-    @media (min-width: 1200px) {
-      margin-left: 56px;
-      margin-right: 56px;
-    }
-  `;
+  @media (min-width: 768px) {
+    margin-left: 32px;
+    margin-right: 32px;
+  }
+  @media (min-width: 1200px) {
+    margin-left: 56px;
+    margin-right: 56px;
+  }
+`;
 
-  const Header = styled.section`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  `;
+const Header = styled.section`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
 
-  const Sections = styled.section`
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 16px;
+const Sections = styled.section`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
 
-    @media (min-width: 768px) {
-      gap: 20px;
-    }
-    @media (min-width: 1200px) {
-      gap: 24px;
-    }
-  `;
+  @media (min-width: 768px) {
+    gap: 20px;
+  }
+  @media (min-width: 1200px) {
+    gap: 24px;
+  }
+`;
 
-  const Container = styled.div`
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
+const Container = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
 
-    @media (min-width: 768px) {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-    }
-    @media (min-width: 1200px) {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-  `;
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+`;
 
 function App() {
   const dispatch = useAppDispatch();
@@ -89,20 +118,20 @@ function App() {
 
     const query = searchTerm.trim().toLowerCase();
     if (query) {
-    filtered = filtered.filter((post: any) => {
-      const title = (post.title ?? "").toLowerCase();
-      const content = (post.content ?? "").toLowerCase();
-      const authorName = (post.author?.name ?? "").toLowerCase();
-      return (
-        title.includes(query) ||
-        content.includes(query) ||
-        authorName.includes(query)
-      );
-    });
-  }
+      filtered = filtered.filter((post: string) => {
+        const title = (post.title ?? "").toLowerCase();
+        const content = (post.content ?? "").toLowerCase();
+        const authorName = (post.author?.name ?? "").toLowerCase();
+        return (
+          title.includes(query) ||
+          content.includes(query) ||
+          authorName.includes(query)
+        );
+      });
+    }
 
     if (selectedCategory) {
-      filtered = filtered.filter((post) =>
+      filtered = filtered.filter((post: Post) =>
         post.categories.some((cat) => cat.id === selectedCategory)
       );
     }
@@ -123,31 +152,57 @@ function App() {
 
   return (
     <PageWrapper>
-      <Navbar/>
-      <Header>
-        <h2>DWS Blog</h2>
-        <Sort />
-      </Header>
+      <Navbar />
+      <TopBar>
+    <h2>DWS Blog</h2>
+
+    <RightArea>
+      <MobileFilters>
+        <Dropdown label="Category">
+          <Categories
+            selectedId={selectedCategory ?? undefined}
+            onSelectCategory={(id: string | null) => {
+              dispatch(setCategory(id));
+            }}
+          />
+        </Dropdown>
+
+        <Dropdown label="Author" >
+          <Authors
+            selectedId={selectedAuthor ?? undefined}
+            onSelectAuthor={(id: string | null) => {
+              dispatch(setAuthor(id));
+            }}
+          />
+        </Dropdown>
+      </MobileFilters>
+
+      <Sort />
+    </RightArea>
+  </TopBar>
+      
+      
       <Sections>
-        <SideComponent onApplyFilters={handleApplyFilters}/>
+        <SideComponent onApplyFilters={handleApplyFilters} />
+       
         <Container>
-  {filteredAndSortedPosts.length === 0 ? (
-    <p>There's no result</p>
-  ) : (
-    filteredAndSortedPosts.map((post) => (
-      <PostCard
-        key={post.id}
-        id={post.id}
-        title={post.title}
-        image={post.thumbnail_url}
-        author={post.author.name}
-        date={post.createdAt}
-        categories={post.categories}
-        text={post.content}
-      />
-    ))
-  )}
-</Container>
+          {filteredAndSortedPosts.length === 0 ? (
+            <p>There's no result</p>
+          ) : (
+            filteredAndSortedPosts.map((post) => (
+              <PostCard
+                key={post.id}
+                id={post.id}
+                title={post.title}
+                image={post.thumbnail_url}
+                author={post.author.name}
+                date={post.createdAt}
+                categories={post.categories}
+                text={post.content}
+              />
+            ))
+          )}
+        </Container>
       </Sections>
     </PageWrapper>
   );
