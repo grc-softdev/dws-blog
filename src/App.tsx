@@ -10,17 +10,30 @@ import { Dropdown } from "./components/ui/Dropdown";
 import Categories from "./components/Categories";
 import Authors from "./components/Authors";
 import { usePosts } from "./hooks/usePosts";
+import { Wrapper } from "./components/layout/Layout";
 
 const TopBar = styled.section`
   display: flex;
   align-items: center;
   justify-content: space-between;
+   /* Mobile */
+  @media (max-width: 768px) {
+    justify-content: space-evenly;
+  }
+`;
+
+const Title = styled.h2`
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const RightArea = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
+  margin-bottom: 16px;
 `;
 
 const MobileFilters = styled.div`
@@ -28,21 +41,6 @@ const MobileFilters = styled.div`
   gap: 8px;
   @media (min-width: 768px) {
     display: none;
-  }
-`;
-
-const PageWrapper = styled.main`
-  min-height: 100vh;
-  margin-left: 16px;
-  margin-right: 16px;
-
-  @media (min-width: 768px) {
-    margin-left: 32px;
-    margin-right: 32px;
-  }
-  @media (min-width: 1200px) {
-    margin-left: 56px;
-    margin-right: 56px;
   }
 `;
 
@@ -62,8 +60,10 @@ const Sections = styled.section`
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  justify-items: center;
+  padding-inline: 8px;
 
   @media (min-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
@@ -128,11 +128,10 @@ function App() {
   if (isError) return <p>Error: {(error as Error).message}</p>;
 
   return (
-    <PageWrapper>
+    <Wrapper>
       <Navbar />
       <TopBar>
-        <h2>DWS Blog</h2>
-
+        <Title>DWS Blog</Title>
         <RightArea>
           <MobileFilters>
             <Dropdown label="Category">
@@ -180,7 +179,7 @@ function App() {
           )}
         </Container>
       </Sections>
-    </PageWrapper>
+    </Wrapper>
   );
 }
 

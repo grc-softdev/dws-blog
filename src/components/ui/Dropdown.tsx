@@ -1,6 +1,7 @@
 import React, { useEffect, useId, useRef, useState } from "react";
 import styled from "styled-components";
 import { Button } from "./Button";
+import { FiChevronDown } from "react-icons/fi";
 
 type DropdownProps = {
   label: React.ReactNode;
@@ -32,20 +33,14 @@ const Panel = styled.div<{ $align: "left" | "right" }>`
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 `;
 
-export function Dropdown({
-  label,
-  children,
-  className,
-  align = "left",
-}: DropdownProps) {
+export function Dropdown({ label, children, className, align = "left" }: DropdownProps) {
   const [open, setOpen] = useState(false);
   const id = useId();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onDown = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node))
-        setOpen(false);
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     };
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     document.addEventListener("mousedown", onDown);
@@ -60,20 +55,20 @@ export function Dropdown({
     <Wrap ref={ref} className={className}>
       <Button
         variant="secondary"
-        aria-haspopup="dialog"
+        px="16px"
+        aria-haspopup="menu"
         aria-expanded={open}
         aria-controls={id}
         onClick={() => setOpen((o) => !o)}
+        iconRight={<FiChevronDown size={16} />}   // ⬅️ aqui
       >
         {label}
       </Button>
 
       {open && (
-        <Panel id={id} role="dialog" aria-modal={false} $align={align}>
+        <Panel id={id} role="menu" aria-modal={false} $align={align}>
           {React.isValidElement<WithOnCloseDropdown>(children)
-            ? React.cloneElement(children, {
-                onCloseDropdown: () => setOpen(false),
-              })
+            ? React.cloneElement(children, { onCloseDropdown: () => setOpen(false) })
             : children}
         </Panel>
       )}

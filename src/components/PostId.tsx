@@ -5,21 +5,8 @@ import PostCard from "../components/PostCard";
 import { Button } from "../components/ui/Button";
 import { FaArrowLeft } from "react-icons/fa";
 import { usePost, usePosts } from "../hooks/usePosts";
-
-const Wrapper = styled.main`
-  min-height: 100vh;
-  margin-left: 16px;
-  margin-right: 16px;
-
-  @media (min-width: 768px) {
-    margin-left: 32px;
-    margin-right: 32px;
-  }
-  @media (min-width: 1200px) {
-    margin-left: 56px;
-    margin-right: 56px;
-  }
-`;
+import { formattedDate } from "../utils/format";
+import { Grid, Wrapper } from "./layout/Layout";
 
 const Container = styled.div`
   max-width: 1100px;
@@ -77,7 +64,7 @@ const Cover = styled.img`
 `;
 
 const Prose = styled.article`
-  color: var(--neutrals-darkest, #202122);
+  color: var(--neutral-darkest, #202122);
   font-size: 16px;
   line-height: 1.6;
 
@@ -106,42 +93,23 @@ const Prose = styled.article`
 
 const Divider = styled.hr`
   border: none;
-  border-top: 1px solid var(--neutrals-extra-light, #e0e2e6);
+  border-top: 1px solid var(--neutral-extra-light, #e0e2e6);
   margin: 32px 0;
 `;
 
 const SectionTitle = styled.h2`
   font-size: clamp(20px, 2.5vw, 28px);
   margin: 0 0 16px;
-`;
+  padding-inline: 8px;
 
-const CardsGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-  
+  @media (min-width: 480px) {
+    padding-inline: 12px;
+  }
 
   @media (min-width: 768px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px;
-  }
-  @media (min-width: 1200px) {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 24px;
+    padding-inline: 16px;
   }
 `;
-
-function formatDate(d: string) {
-  try {
-    return new Date(d).toLocaleDateString("pt-BR", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    });
-  } catch {
-    return d;
-  }
-}
 
 const PostId = () => {
   const { id } = useParams();
@@ -150,11 +118,13 @@ const PostId = () => {
   const posts = usePosts();
 
   if (postById.isLoading) return <p>Loading...</p>;
-  if (postById.isError) return <p>Error: {(postById.error as Error).message}</p>;
+  if (postById.isError)
+    return <p>Error: {(postById.error as Error).message}</p>;
 
   const data = postById.data!;
   const avatar = data.author?.profilePicture;
   const authorId = data.author?.id;
+  const date = data.createdAt;
 
   const latestByAuthor = (posts.data || [])
     .filter(
@@ -167,58 +137,57 @@ const PostId = () => {
     .slice(0, 3);
 
   return (
-      
-      <Wrapper>
+    <Wrapper>
       <Navbar />
-        <Container>
-          <TopBar>
-            <Button
-              variant="secondary"
-              iconLeft={<FaArrowLeft />}
-              onClick={() => navigate(-1)}
-            >
-              Back
-            </Button>
-            <div />
-          </TopBar>
+      <Container>
+        <TopBar>
+          <Button
+            variant="secondary"
+            iconLeft={<FaArrowLeft />}
+            onClick={() => navigate(-1)}
+          >
+            Back
+          </Button>
+          <div />
+        </TopBar>
 
-          <Title>{data.title}</Title>
+        <Title>{data.title}</Title>
 
-          <Meta>
-              <Avatar src={avatar} alt={data.author?.name} />
-            <span>
-              Written by: <AuthorName>{data.author?.name}</AuthorName>
-            </span>
-            <span style={{ color: "var(--neutrals-dark, #7f8185)" }}>
-              • {formatDate(data.createdAt)}
-            </span>
-          </Meta>
+        <Meta>
+          <Avatar src={avatar} alt={data.author?.name} />
+          <span>
+            Written by: <AuthorName>{data.author?.name}</AuthorName>
+          </span>
+          <span style={{ color: "var(--neutral-dark, #7f8185)" }}>
+            • {formattedDate(date)}
+          </span>
+        </Meta>
 
-          {data.thumbnail_url && (
-            <Cover src={data.thumbnail_url} alt={data.title} />
-          )}
+        {data.thumbnail_url && (
+          <Cover src={data.thumbnail_url} alt={data.title} />
+        )}
 
-          <Prose dangerouslySetInnerHTML={{ __html: data.content }} />
+        <Prose dangerouslySetInnerHTML={{ __html: data.content }} />
 
-          <Divider />
+        <Divider />
 
-          <SectionTitle>Latest articles</SectionTitle>
-          <CardsGrid>
-            {latestByAuthor.map((p) => (
-              <PostCard
-                key={p.id}
-                id={p.id}
-                title={p.title}
-                image={p.thumbnail_url}
-                author={p.author?.name}
-                date={p.createdAt}
-                categories={p.categories}
-                text={p.content}
-              />
-            ))}
-          </CardsGrid>
-        </Container>
-      </Wrapper>
+        <SectionTitle>Latest articles</SectionTitle>
+        <Grid>
+          {latestByAuthor.map((p) => (
+            <PostCard
+              key={p.id}
+              id={p.id}
+              title={p.title}
+              image={p.thumbnail_url}
+              author={p.author?.name}
+              date={p.createdAt}
+              categories={p.categories}
+              text={p.content}
+            />
+          ))}
+        </Grid>
+      </Container>
+    </Wrapper>
   );
 };
 

@@ -12,10 +12,14 @@ const SortContainer = styled.div`
   align-items: center;
   gap: 8px;
   font-size: var(--body-size);
-  color: var(--neutrals-darkest);
+  color: var(--neutral-darkest);
+`;
 
-  span.label {
-    font-weight: bold;
+const Span = styled.span`
+ color: var(--neutral-dark);
+  font-weight: bold;
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -28,8 +32,9 @@ const SortButton = styled.button<{ order: OrderProps["order"] }>`
   background-color: transparent;
   border: none;
   cursor: pointer;
+  margin-top: 18px;
   color: ${({ order }) =>
-    order === "newest" ? "var(--neutrals-darkest)" : "var(--neutrals-medium)"};
+    order === "newest" ? "var(--neutral-darkest)" : "var(--neutral-medium)"};
   transition: all 0.2s ease;
 
   svg {
@@ -56,7 +61,7 @@ const Sort = () => {
 
   return (
     <SortContainer>
-      <span className="label">Sort by:</span>
+      <Span className="label">Sort by:</Span>
       <SortButton order={order} onClick={toggleOrder}>
         {order === "newest" ? "Newest first" : "Oldest first"}
         <RiArrowUpDownFill />

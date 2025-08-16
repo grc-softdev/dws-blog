@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { formattedDate} from "../utils/format.ts"
 
 type PostCardProps = {
   title: string;
@@ -44,7 +45,7 @@ const CardMeta = styled.div`
   align-items: start;
   justify-content: start;
   font-size: var(--body-small-size);
-  color: var(--neutrals-medium);
+  color: var(--neutral-medium);
   margin-bottom: 0.5rem;
 
   .dot {
@@ -56,14 +57,14 @@ const CardMeta = styled.div`
 const CardTitle = styled.h2`
   font-size: var(--h3-size);
   font-weight: var(--bold);
-  color: var(--neutrals-darkest);
+  color: var(--neutral-darkest);
   margin-bottom: 0.5rem;
 `;
 
 const CardDescription = styled.p`
   font-size: var(--body-small-size);
   line-height: var(--body-line-height);
-  color: var(--neutrals-dark);
+  color: var(--neutral-dark);
   margin-bottom: 1rem;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -77,8 +78,8 @@ const CardTags = styled.div`
   gap: 0.5rem;
 
   .tag {
-    background: var(--neutrals-lightest);
-    color: var(--neutrals-dark);
+    background: var(--neutral-lightest);
+    color: var(--neutral-dark);
     font-size: var(--caption-size);
     padding: 0.5rem 0.75rem;
     border-radius: 42px;
@@ -94,11 +95,6 @@ const PostCard = ({
   text,
   id,
 }: PostCardProps) => {
-  const formattedDate = new Date(date).toLocaleDateString("en-BR", {
-    month: "short",
-    day: "2-digit",
-    year: "numeric",
-  });
 
   const apply = "apply";
 
@@ -110,7 +106,7 @@ const PostCard = ({
         </CardImage>
         <CardContent>
           <CardMeta>
-            <span className="date">{formattedDate}</span>
+            <span className="date">{formattedDate(date)}</span>
             <span className="dot">•</span>
             <span className="author">{author}</span>
           </CardMeta>
