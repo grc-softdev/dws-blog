@@ -1,12 +1,9 @@
 import styled from "styled-components";
 import { FaSearch } from "react-icons/fa";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDebounce } from "../hooks/useDebounce";
-
-type SearchBarProps = {
-  onSearchChange: (v: string) => void;
-  searchTerm: string;
-};
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { setSearchTerm } from "../store/filtersSlice";
 
 const SearchContainer = styled.div`
   display: flex;
@@ -49,19 +46,20 @@ const SearchButton = styled.button`
   }
 `;
 
-export default function SearchBar({
-  onSearchChange,
-  searchTerm,
-}: SearchBarProps) {
-  const debounced = useDebounce(searchTerm, 500);
+export default function SearchBar() {
+  const dispatch = useAppDispatch();
+  const searchTerm = useAppSelector((state) => state.filters.searchTerm);
+  const [localTerm, setLocalTerm] = useState(searchTerm);
+
+  const debounced = useDebounce(localTerm, 500);
 
   useEffect(() => {
-    onSearchChange(debounced);
-  }, [debounced, onSearchChange]);
+    dispatch(setSearchTerm(debounced));
+  }, [debounced, dispatch]);
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSearchChange(searchTerm);
+    dispatch(setSearchTerm(localTerm));
   };
 
   return (
@@ -70,8 +68,8 @@ export default function SearchBar({
         <SearchInput
           type="text"
           placeholder="Search"
-          value={searchTerm}
-          onChange={(e) => onSearchChange(e.target.value)}
+          value={localTerm}
+          onChange={(e) => setLocalTerm(e.target.value)}
         />
         <SearchButton type="submit">
           <FaSearch />

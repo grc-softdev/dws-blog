@@ -4,7 +4,12 @@ import Navbar from "./components/Navbar";
 import SideComponent from "./components/SideComponent";
 import PostCard from "./components/PostCard";
 import Sort from "./components/Sort";
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
+import { useAppDispatch, useAppSelector } from "./store/hooks";
+import {
+  setCategory,
+  setAuthor,
+} from "./store/filtersSlice";
 
 const PageWrapper = styled.main`
     min-height: 100vh;
@@ -57,15 +62,16 @@ const PageWrapper = styled.main`
   `;
 
 function App() {
+  const dispatch = useAppDispatch();
+  const { order, searchTerm, selectedCategory, selectedAuthor } =
+    useAppSelector((s) => s.filters);
 
-  const [order, setOrder] = useState<"newest" | "oldest">("newest");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedAuthor, setSelectedAuthor] = useState<string | null>(null);
-  
-  const handleApplyFilters = (category: string | null, author: string | null) => {
-    setSelectedCategory(category);
-    setSelectedAuthor(author);
+  const handleApplyFilters = (
+    category: string | null,
+    author: string | null
+  ) => {
+    dispatch(setCategory(category));
+    dispatch(setAuthor(author));
   };
 
   const { data, isLoading, isError, error } = useQuery({
@@ -96,7 +102,7 @@ function App() {
   }
 
     if (selectedCategory) {
-      filtered = data.filter((post) =>
+      filtered = filtered.filter((post) =>
         post.categories.some((cat) => cat.id === selectedCategory)
       );
     }
@@ -117,27 +123,31 @@ function App() {
 
   return (
     <PageWrapper>
-      <Navbar onSearchChange={setSearchTerm} searchTerm={searchTerm}/>
+      <Navbar/>
       <Header>
         <h2>DWS Blog</h2>
-        <Sort order={order} onSortChange={setOrder} />
+        <Sort />
       </Header>
       <Sections>
         <SideComponent onApplyFilters={handleApplyFilters}/>
         <Container>
-          {filteredAndSortedPosts.map((post) => (
-            <PostCard
-              key={post.id}
-              id={post.id}
-              title={post.title}
-              image={post.thumbnail_url}
-              author={post.author.name}
-              date={post.createdAt}
-              categories={post.categories}
-              text={post.content}
-            />
-          ))}
-        </Container>
+  {filteredAndSortedPosts.length === 0 ? (
+    <p>There's no result</p>
+  ) : (
+    filteredAndSortedPosts.map((post) => (
+      <PostCard
+        key={post.id}
+        id={post.id}
+        title={post.title}
+        image={post.thumbnail_url}
+        author={post.author.name}
+        date={post.createdAt}
+        categories={post.categories}
+        text={post.content}
+      />
+    ))
+  )}
+</Container>
       </Sections>
     </PageWrapper>
   );

@@ -18,7 +18,6 @@ const Categories = ({ onSelectCategory }) => {
 
   return (
     <div>
-      <h4>Category</h4>
       {isFetching && <span>Loading...</span>}
       {data.map((category: any) => (
         <div

@@ -38,10 +38,9 @@ const filtersSlice = createSlice({
       state.selectedCategory = null;
       state.searchTerm = "";
       state.order = "newest";
-    },
+    }
   },
 });
 
-export const { setOrder, setSearchTerm, setCategory, setAuthor, clearFilters } =
-  filtersSlice.actions;
+export const { setOrder, setSearchTerm, setCategory, setAuthor, clearFilters } = filtersSlice.actions;
 export default filtersSlice.reducer;

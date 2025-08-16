@@ -29,7 +29,7 @@ const Tagline = styled.span`
   margin-left: -10px;
 `;
 
-const Navbar = ({ onSearchChange, searchTerm }) => {
+const Navbar = () => {
   return (
     <Container>
       <Link to={`/`} style={{ textDecoration: "none", color: "inherit" }}>
@@ -38,7 +38,7 @@ const Navbar = ({ onSearchChange, searchTerm }) => {
           <Tagline>world services</Tagline>
         </Brand>
       </Link>
-      <SearchBar onSearchChange={onSearchChange} searchTerm={searchTerm} />
+      <SearchBar />
     </Container>
   );
 };

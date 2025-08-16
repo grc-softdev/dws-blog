@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-type PostCardProps = { 
-  title: string; 
+type PostCardProps = {
+  title: string;
   image: string;
   author: string;
   date: string;
   categories: CategoryProp[];
   text: string;
   id: string;
-}
+};
 
 type CategoryProp = {
   name: string;
@@ -24,7 +24,7 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   width: 314px;
-  height: auto;
+  height: 425px;
 `;
 
 const CardImage = styled.div`
@@ -49,7 +49,7 @@ const CardMeta = styled.div`
 
   .dot {
     margin: 0 0.5rem;
-    color: var(--pink-dark)
+    color: var(--pink-dark);
   }
 `;
 
@@ -85,38 +85,52 @@ const CardTags = styled.div`
   }
 `;
 
-const PostCard = ({ title, image, author, date, categories, text, id }: PostCardProps) => {
+const PostCard = ({
+  title,
+  image,
+  author,
+  date,
+  categories,
+  text,
+  id,
+}: PostCardProps) => {
   const formattedDate = new Date(date).toLocaleDateString("en-BR", {
     month: "short",
     day: "2-digit",
     year: "numeric",
   });
 
+  const apply = "apply";
+
   return (
     <Link to={`/posts/${id}`} style={{ textDecoration: "none" }}>
-    <Card>
-      <CardImage>
-        <img src={image} alt="Article" />
-      </CardImage>
-      <CardContent>
-        <CardMeta>
-          <span className="date">{formattedDate}</span>
-          <span className="dot">•</span>
-          <span className="author">{author}</span>
-        </CardMeta>
+      <Card>
+        <CardImage>
+          <img src={image} alt="Article" />
+        </CardImage>
+        <CardContent>
+          <CardMeta>
+            <span className="date">{formattedDate}</span>
+            <span className="dot">•</span>
+            <span className="author">{author}</span>
+          </CardMeta>
 
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{text}</CardDescription>
+          <CardTitle>{title}</CardTitle>
+          <CardDescription>{text}</CardDescription>
 
-        <CardTags>
-          {categories.map((category) => (
-            <span className="tag" key={category.id}>
-              {category.name}
-            </span>
-          ))}
-        </CardTags>
-      </CardContent>
-    </Card>
+          <CardTags>
+            {categories?.length ? (
+              categories.map((category) => (
+                <span className="tag" key={category.id}>
+                  {category.name}
+                </span>
+              ))
+            ) : (
+              <span className="tag">{apply}</span>
+            )}
+          </CardTags>
+        </CardContent>
+      </Card>
     </Link>
   );
 };

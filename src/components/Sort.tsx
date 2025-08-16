@@ -1,13 +1,10 @@
 import styled from "styled-components";
 import { RiArrowUpDownFill } from "react-icons/ri";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { setOrder } from "../store/filtersSlice";
 
 interface OrderProps {
   order: "newest" | "oldest";
-}
-
-interface SortProps {
-  onSortChange: (order: OrderProps["order"]) => void;
-  order: OrderProps["order"];
 }
 
 const SortContainer = styled.div`
@@ -31,7 +28,8 @@ const SortButton = styled.button<{ order: OrderProps["order"] }>`
   background-color: transparent;
   border: none;
   cursor: pointer;
-  color: ${({ order }) => (order === "newest" ? "var(--gray-darkest)" : "var(--gray-medium)")};
+  color: ${({ order }) =>
+    order === "newest" ? "var(--gray-darkest)" : "var(--gray-medium)"};
   transition: all 0.2s ease;
 
   svg {
@@ -40,7 +38,7 @@ const SortButton = styled.button<{ order: OrderProps["order"] }>`
   }
 
   &:hover {
-    background-color: var(--cyan-dark);
+    background-color: var(--cyan-medium);
     color: #fff;
     svg {
       color: #fff;
@@ -48,10 +46,14 @@ const SortButton = styled.button<{ order: OrderProps["order"] }>`
   }
 `;
 
-const Sort = ({ order, onSortChange }: SortProps) => {
+const Sort = () => {
+  const dispatch = useAppDispatch();
+  const order = useAppSelector((state) => state.filters.order);
+
   const toggleOrder = () => {
-    onSortChange(order === "newest" ? "oldest" : "newest");
+    dispatch(setOrder(order === "newest" ? "oldest" : "newest"));
   };
+
   return (
     <SortContainer>
       <span className="label">Sort by:</span>
