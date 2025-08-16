@@ -5,7 +5,6 @@ import { useDebounce } from "../hooks/useDebounce";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { setSearchTerm } from "../store/filtersSlice";
 
-/** hook simples p/ detectar mobile (<= 767px) */
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
@@ -31,15 +30,13 @@ const SearchContainer = styled.div<{ $open?: boolean }>`
   transition: border-color 160ms ease, background-color 160ms ease, padding 160ms ease;
 
   &:hover {
-    border-color: var(--cyan-medium);
+    border-color: var(--accent-medium);
   }
 
-  /* ---- Mobile: mostrar só o botão; quando $open=true, vira um chip com input abrindo à esquerda ---- */
   @media (max-width: 639px) {
-    /* layout compacto; o input expandirá à esquerda do botão */
     width: auto;
     gap: 8px;
-    overflow: hidden; /* evita “vazar” durante a animação */
+    overflow: hidden; 
 
     ${({ $open }) =>
       $open
@@ -49,7 +46,6 @@ const SearchContainer = styled.div<{ $open?: boolean }>`
       padding: 8px 12px;
     `
         : `
-      /* fechado: só o botão aparece */
       background: transparent;
       border-color: transparent;
       padding: 0;
@@ -70,9 +66,7 @@ const SearchInput = styled.input<{ $open?: boolean }>`
     color: #777;
   }
 
-  /* Mobile: animar largura p/ abrir à esquerda */
   @media (max-width: 639px) {
-    /* tira o flex para controlar width manualmente */
     flex: 0 0 auto;
     width: ${({ $open }) => ($open ? "180px" : "0px")};
     opacity: ${({ $open }) => ($open ? 1 : 0)};
@@ -112,7 +106,6 @@ export default function SearchBar() {
     dispatch(setSearchTerm(debounced));
   }, [debounced, dispatch]);
 
-  // Fecha no blur quando vazio (mobile), e no ESC
   useEffect(() => {
     if (!isMobile) return;
     const onKey = (e: KeyboardEvent) => {
@@ -124,7 +117,6 @@ export default function SearchBar() {
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    // no mobile: se estiver fechado, primeiro abre; se já aberto, envia
     if (isMobile && !isOpen) {
       setIsOpen(true);
       requestAnimationFrame(() => inputRef.current?.focus());
@@ -134,7 +126,6 @@ export default function SearchBar() {
   };
 
   const handleBlur = () => {
-    // só colapsa no mobile se estiver vazio
     if (isMobile && !localTerm.trim()) {
       setIsOpen(false);
     }
@@ -143,8 +134,6 @@ export default function SearchBar() {
   return (
     <form onSubmit={submit}>
       <SearchContainer $open={isMobile ? isOpen : true}>
-        {/* ordem: input à esquerda, botão à direita.
-            Quando fechado no mobile, o input tem width:0, então só o botão aparece */}
         <SearchInput
           ref={inputRef}
           $open={isMobile ? isOpen : true}

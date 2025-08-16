@@ -38,22 +38,22 @@ const baseStyles = css<{ $full?: boolean }>`
 `;
 
 const primaryStyles = css`
-  background: var(--pink-medium);
+  background: var(--secondary-medium);
   color: #fff;
 
   &:hover:not(:disabled) {
-    background: var(--pink-dark);
+    background: var(--secondary-dark);
   }
 `;
 
 const secondaryStyles = css`
   background: transparent;
-  color: var(--pink-medium);
-  border: 1px solid var(--pink-medium);
+  color: var(--secondary-medium);
+  border: 1px solid var(--secondary-medium);
 
   &:hover:not(:disabled) {
-    color: var(--pink-dark);
-    border-color: var(--pink-dark);
+    color: var(--secondary-dark);
+    border-color: var(--secondary-dark);
   }
 `;
 

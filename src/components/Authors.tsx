@@ -8,6 +8,7 @@ type Author = {
 
 type AuthorsProps = {
   onSelectAuthor: (categoryId: string) => void;
+  onCloseDropdown?: () => void;
   selectedId?: string; 
 };
 
@@ -29,7 +30,7 @@ const Item = styled.div<{ $selected?: boolean }>`
   border-bottom: 1px solid #eee;
   font-size: 14px;
 
-  color: ${({ $selected }) => ($selected ? "var(--pink-medium)" : "#333")};
+  color: ${({ $selected }) => ($selected ? "var(--secondary-medium)" : "#333")};
   font-weight: ${({ $selected }) => ($selected ? 600 : 400)};
 
   &:last-child {
@@ -38,7 +39,7 @@ const Item = styled.div<{ $selected?: boolean }>`
   
 `;
 
-const Authors = ({ onSelectAuthor }: AuthorsProps) => {
+const Authors = ({ onSelectAuthor, onCloseDropdown }: AuthorsProps) => {
   const { data = [], isLoading, isError, error } = useQuery<Author[], Error>({
     queryKey: ["authors"],
     queryFn: async () => {
@@ -59,7 +60,10 @@ const Authors = ({ onSelectAuthor }: AuthorsProps) => {
         {data.map((author) => (
           <Item
             key={author.id}
-            onClick={() => onSelectAuthor(author.id)}
+            onClick={() => {
+              onSelectAuthor(author.id)
+              onCloseDropdown?.()
+            }}
           >
             {author.name}
           </Item>

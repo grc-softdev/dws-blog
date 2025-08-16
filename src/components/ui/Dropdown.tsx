@@ -9,6 +9,8 @@ type DropdownProps = {
   align?: "left" | "right";
 };
 
+type WithOnCloseDropdown = { onCloseDropdown?: () => void };
+
 const Wrap = styled.div`
   position: relative;
   display: inline-block;
@@ -27,17 +29,23 @@ const Panel = styled.div<{ $align: "left" | "right" }>`
   background: #fff;
   border: 1px solid var(--neutral-extra-light, #e0e2e6);
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 `;
 
-export function Dropdown({ label, children, className, align = "left" }: DropdownProps) {
+export function Dropdown({
+  label,
+  children,
+  className,
+  align = "left",
+}: DropdownProps) {
   const [open, setOpen] = useState(false);
   const id = useId();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onDown = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+      if (ref.current && !ref.current.contains(e.target as Node))
+        setOpen(false);
     };
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     document.addEventListener("mousedown", onDown);
@@ -62,14 +70,8 @@ export function Dropdown({ label, children, className, align = "left" }: Dropdow
 
       {open && (
         <Panel id={id} role="dialog" aria-modal={false} $align={align}>
-          {/* Para fechar ao selecionar algo dentro, você pode
-              chamar setOpen(false) via render prop se preferir.
-              Aqui assumimos que os itens internos disparam um clique
-              e o usuário fecha clicando fora; se quiser fechar
-              automaticamente, envolva os itens e capture o clique. */}
-          {React.isValidElement(children)
-            ? React.cloneElement(children as React.ReactElement, {
-                // passa uma prop opcional para filhos fecharem o dropdown
+          {React.isValidElement<WithOnCloseDropdown>(children)
+            ? React.cloneElement(children, {
                 onCloseDropdown: () => setOpen(false),
               })
             : children}

@@ -17,7 +17,7 @@ const Section = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  border: 1px solid var(--gray-light);
+  border: 1px solid var(--neutrals-light);
   
   @media (max-width: 767px) {
     display: none;

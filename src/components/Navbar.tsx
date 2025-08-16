@@ -9,6 +9,7 @@ const Container = styled.header`
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid #dcdcdc;
+  margin-top: 6px;
 `;
 
 const Brand = styled.div`

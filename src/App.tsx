@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
 import Navbar from "./components/Navbar";
 import SideComponent from "./components/SideComponent";
@@ -10,15 +9,7 @@ import { setCategory, setAuthor } from "./store/filtersSlice";
 import { Dropdown } from "./components/ui/Dropdown";
 import Categories from "./components/Categories";
 import Authors from "./components/Authors";
-
-type Post = {
-  title: string;
-  image: string;
-  author: string;
-  date: string;
-  category: string;
-  content: string;
-};
+import { usePosts } from "./hooks/usePosts";
 
 const TopBar = styled.section`
   display: flex;
@@ -55,16 +46,10 @@ const PageWrapper = styled.main`
   }
 `;
 
-const Header = styled.section`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
 const Sections = styled.section`
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: center;
   gap: 16px;
 
   @media (min-width: 768px) {
@@ -94,6 +79,7 @@ function App() {
   const dispatch = useAppDispatch();
   const { order, searchTerm, selectedCategory, selectedAuthor } =
     useAppSelector((s) => s.filters);
+  const { data, isLoading, isError, error } = usePosts();
 
   const handleApplyFilters = (
     category: string | null,
@@ -103,22 +89,13 @@ function App() {
     dispatch(setAuthor(author));
   };
 
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["posts"],
-    queryFn: async () => {
-      const res = await fetch("https://tech-test-backend.dwsbrazil.io/posts/");
-      if (!res.ok) throw new Error("Error to search posts");
-      return res.json();
-    },
-  });
-
   const filteredAndSortedPosts = useMemo(() => {
     if (!data) return [];
     let filtered = data;
 
     const query = searchTerm.trim().toLowerCase();
     if (query) {
-      filtered = filtered.filter((post: string) => {
+      filtered = filtered.filter((post) => {
         const title = (post.title ?? "").toLowerCase();
         const content = (post.content ?? "").toLowerCase();
         const authorName = (post.author?.name ?? "").toLowerCase();
@@ -131,7 +108,7 @@ function App() {
     }
 
     if (selectedCategory) {
-      filtered = filtered.filter((post: Post) =>
+      filtered = filtered.filter((post) =>
         post.categories.some((cat) => cat.id === selectedCategory)
       );
     }
@@ -154,37 +131,36 @@ function App() {
     <PageWrapper>
       <Navbar />
       <TopBar>
-    <h2>DWS Blog</h2>
+        <h2>DWS Blog</h2>
 
-    <RightArea>
-      <MobileFilters>
-        <Dropdown label="Category">
-          <Categories
-            selectedId={selectedCategory ?? undefined}
-            onSelectCategory={(id: string | null) => {
-              dispatch(setCategory(id));
-            }}
-          />
-        </Dropdown>
+        <RightArea>
+          <MobileFilters>
+            <Dropdown label="Category">
+              <Categories
+                selectedId={selectedCategory ?? undefined}
+                onSelectCategory={(id: string | null) => {
+                  dispatch(setCategory(id));
+                }}
+              />
+            </Dropdown>
 
-        <Dropdown label="Author" >
-          <Authors
-            selectedId={selectedAuthor ?? undefined}
-            onSelectAuthor={(id: string | null) => {
-              dispatch(setAuthor(id));
-            }}
-          />
-        </Dropdown>
-      </MobileFilters>
+            <Dropdown label="Author">
+              <Authors
+                selectedId={selectedAuthor ?? undefined}
+                onSelectAuthor={(id: string | null) => {
+                  dispatch(setAuthor(id));
+                }}
+              />
+            </Dropdown>
+          </MobileFilters>
 
-      <Sort />
-    </RightArea>
-  </TopBar>
-      
-      
+          <Sort />
+        </RightArea>
+      </TopBar>
+
       <Sections>
         <SideComponent onApplyFilters={handleApplyFilters} />
-       
+
         <Container>
           {filteredAndSortedPosts.length === 0 ? (
             <p>There's no result</p>

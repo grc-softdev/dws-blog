@@ -12,7 +12,7 @@ const SortContainer = styled.div`
   align-items: center;
   gap: 8px;
   font-size: var(--body-size);
-  color: var(--gray-darkest);
+  color: var(--neutrals-darkest);
 
   span.label {
     font-weight: bold;
@@ -29,7 +29,7 @@ const SortButton = styled.button<{ order: OrderProps["order"] }>`
   border: none;
   cursor: pointer;
   color: ${({ order }) =>
-    order === "newest" ? "var(--gray-darkest)" : "var(--gray-medium)"};
+    order === "newest" ? "var(--neutrals-darkest)" : "var(--neutrals-medium)"};
   transition: all 0.2s ease;
 
   svg {
@@ -38,7 +38,7 @@ const SortButton = styled.button<{ order: OrderProps["order"] }>`
   }
 
   &:hover {
-    background-color: var(--cyan-medium);
+    background-color: var(--accent-medium);
     color: #fff;
     svg {
       color: #fff;

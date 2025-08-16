@@ -1,29 +1,29 @@
 @use './variables' as *;
 
 :root {
-  /* Grays */
-  --gray-lightest: #{$gray-lightest};
-  --gray-extra-light: #{$gray-extra-light};
-  --gray-light: #{$gray-light};
-  --gray-medium: #{$gray-medium};
-  --gray-dark: #{$gray-dark};
-  --gray-extra-dark: #{$gray-extra-dark};
-  --gray-darkest: #{$gray-darkest};
+  /* Neutrals */
+  --neutrals-lightest: #{$neutrals-lightest};
+  --neutrals-extra-light: #{$neutrals-extra-light};
+  --neutrals-light: #{$neutrals-light};
+  --neutrals-medium: #{$neutrals-medium};
+  --neutrals-dark: #{$neutrals-dark};
+  --neutrals-extra-dark: #{$neutrals-extra-dark};
+  --neutrals-darkest: #{$neutrals-darkest};
 
-  /* Navy */
-  --navy-light: #{$navy-light};
-  --navy-medium: #{$navy-medium};
-  --navy-dark: #{$navy-dark};
+  /* Primary */
+  --primary-light: #{$primary-light};
+  --primary-medium: #{$primary-medium};
+  --primary-dark: #{$primary-dark};
 
-  /* Pink */
-  --pink-light: #{$pink-light};
-  --pink-medium: #{$pink-medium};
-  --pink-dark: #{$pink-dark};
+  /* Secondary */
+  --secondary-light: #{$secondary-light};
+  --secondary-medium: #{$secondary-medium};
+  --secondary-dark: #{$secondary-dark};
 
-  /* Cyan */
-  --cyan-light: #{$cyan-light};
-  --cyan-medium: #{$cyan-medium};
-  --cyan-dark: #{$cyan-dark};
+  /* Accent */
+  --accent-light: #{$accent-light};
+  --accent-medium: #{$accent-medium};
+  --accent-dark: #{$accent-dark};
 
   /* Typography */
   --font-family: #{$font-family};
@@ -46,24 +46,16 @@
   --semibold: #{$semibold};
 }
 
+
 html, body {
+  margin: 0 auto;
+  justify-content: center;
   font-family: var(--font-family);
-  background: radial-gradient(
-    circle at center,
-    white 0%,
-    white 40%,
-    transparent 70%
-  ),
-  linear-gradient(
-    to top right,
-    rgba(191, 233, 255, 1) 0%,
-    rgba(255, 204, 230, 1) 100% 
-  );
-background-attachment: fixed;
-  color: var(--gray-darkest);
+  width: 100%;
+  height: 100%;
+  background: url('../assets/blob.png') no-repeat center center fixed;
+  background-size: cover;
 }
-
-
 
 h1 {
   font-size: var(--h1-size);

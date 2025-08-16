@@ -44,26 +44,26 @@ const CardMeta = styled.div`
   align-items: start;
   justify-content: start;
   font-size: var(--body-small-size);
-  color: var(--gray-medium);
+  color: var(--neutrals-medium);
   margin-bottom: 0.5rem;
 
   .dot {
     margin: 0 0.5rem;
-    color: var(--pink-dark);
+    color: var(--secondary-dark);
   }
 `;
 
 const CardTitle = styled.h2`
   font-size: var(--h3-size);
   font-weight: var(--bold);
-  color: var(--gray-darkest);
+  color: var(--neutrals-darkest);
   margin-bottom: 0.5rem;
 `;
 
 const CardDescription = styled.p`
   font-size: var(--body-small-size);
   line-height: var(--body-line-height);
-  color: var(--gray-dark);
+  color: var(--neutrals-dark);
   margin-bottom: 1rem;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -77,8 +77,8 @@ const CardTags = styled.div`
   gap: 0.5rem;
 
   .tag {
-    background: var(--gray-lightest);
-    color: var(--gray-dark);
+    background: var(--neutrals-lightest);
+    color: var(--neutrals-dark);
     font-size: var(--caption-size);
     padding: 0.5rem 0.75rem;
     border-radius: 42px;

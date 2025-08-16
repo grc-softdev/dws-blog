@@ -8,6 +8,7 @@ type Category = {
 
 type CategoriesProps = {
   onSelectCategory: (categoryId: string) => void;
+  onCloseDropdown?: () => void;
   selectedId?: string;
 }
 
@@ -29,7 +30,7 @@ const Item = styled.div<{ $selected?: boolean }>`
   border-bottom: 1px solid #eee;
   font-size: 14px;
 
-  color: ${({ $selected }) => ($selected ? "var(--cyan-medium)" : "#333")};
+  color: ${({ $selected }) => ($selected ? "var(--accent-medium)" : "#333")};
   font-weight: ${({ $selected }) => ($selected ? 600 : 400)};
 
   &:last-child {
@@ -37,16 +38,16 @@ const Item = styled.div<{ $selected?: boolean }>`
   }
 
   &:hover {
-    color: var(--cyan-medium);
+    color: var(--accent-medium);
   }
   
   &:focus {
-  color: var(--cyan-medium);
-  border: 1px solid var(--cyan-medium);
+  color: var(--accent-medium);
+  border: 1px solid var(--accent-medium);
   }
 `;
 
-const Categories = ({ onSelectCategory, selectedId }: CategoriesProps) => {
+const Categories = ({ onSelectCategory, onCloseDropdown, selectedId }: CategoriesProps) => {
   const { data = [], error, isLoading, isError } = useQuery<Category[], Error>({
     queryKey: ["categories"],
     queryFn: async () => {
@@ -68,7 +69,10 @@ const Categories = ({ onSelectCategory, selectedId }: CategoriesProps) => {
           <Item
             key={category.id}
             $selected={category.id === selectedId}
-            onClick={() => onSelectCategory(category.id)}
+            onClick={() => {
+              onSelectCategory(category.id)
+              onCloseDropdown?.()
+            }}
           >
             {category.name}
           </Item>
