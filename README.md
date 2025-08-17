@@ -11,8 +11,9 @@ The goal is to demonstrate modern frontend development skills with React, implem
 ✅ Search page with dynamic results  
 ✅ Post page with full content and related data  
 ✅ API consumption with DWS data integration  
+✅ Test with RTL and Vitest
 
-👉 [Check out the live project](https://dws-project.vercel.app/)
+👉 [Check out the live project](https://dws-blog-black.vercel.app/)
 
 <p align="center">
   <figure style="display:inline-block; margin:10px;">
@@ -33,9 +34,7 @@ The goal is to demonstrate modern frontend development skills with React, implem
 </p>
 
 
-## Highlights
-
-- OpenAI (GPT) for smoother and more personalized category suggestions  
+## Highlights  
 
 - Redux Toolkit for global state management  
 
@@ -45,7 +44,9 @@ The goal is to demonstrate modern frontend development skills with React, implem
 
 - CSS for styling and responsiveness  
 
-- DWS API as the data source  
+- DWS API as the data source
+  
+- Tests using RTL and Vitest
 
 ---
 
@@ -70,4 +71,4 @@ Then access: http://localhost:3000
 - The code can be refactored by removing components that became unnecessary, such as parts of the Context.
 
 <h2>📌 Discussion Points</h2> 
-- Some project instructions could have been more specific, such as the absence of a "clear filters" button.
+- Some project instructions could have been more specific, such as the absence of a "clear filters" button on desktop version.
