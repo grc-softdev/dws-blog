@@ -8,11 +8,8 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   iconLeft?: React.ReactNode;
   iconRight?: React.ReactNode;
   fullWidth?: boolean;
-  /** altura do botão (ex: 40, "40px", "2.5rem") */
   h?: number | string;
-  /** padding horizontal (ex: 16, "1rem") */
   px?: number | string;
-  /** padding vertical (ex: 0, "6px") */
   py?: number | string;
 };
 
@@ -85,7 +82,6 @@ const StyledButton = styled.button<{
   ${baseStyles}
   ${({ $variant }) => ($variant === "primary" ? primaryStyles : secondaryStyles)}
 
-  /* Chevron rotate quando usado com aria-expanded */
   .btn-right {
     display: inline-flex;
     transition: transform 160ms ease;

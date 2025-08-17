@@ -13,7 +13,8 @@ const Section = styled.div`
   background-color: #fff;
   border-radius: 12px;
   padding: 16px;
-  width: 314px;
+  width: 280px;
+  max-width: 280px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -21,6 +22,10 @@ const Section = styled.div`
   
   @media (max-width: 767px) {
     display: none;
+  }
+  
+  @media (width: 767px) {
+    min-width: 280px;
   }
 `;
 

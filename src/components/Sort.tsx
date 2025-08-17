@@ -10,13 +10,13 @@ interface OrderProps {
 const SortContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
   font-size: var(--body-size);
   color: var(--neutral-darkest);
 `;
 
 const Span = styled.span`
- color: var(--neutral-dark);
+ color: var(--neutral-extra-dark);
+ font-size: body-small-size
   font-weight: bold;
   @media (max-width: 768px) {
     display: none;
@@ -30,9 +30,9 @@ const SortButton = styled.button<{ order: OrderProps["order"] }>`
   padding: 4px 8px;
   border-radius: 16px;
   background-color: transparent;
+  margin-top: 2px;
   border: none;
   cursor: pointer;
-  margin-top: 18px;
   color: ${({ order }) =>
     order === "newest" ? "var(--neutral-darkest)" : "var(--neutral-medium)"};
   transition: all 0.2s ease;
@@ -49,6 +49,10 @@ const SortButton = styled.button<{ order: OrderProps["order"] }>`
       color: #fff;
     }
   }
+  @media (max-width: 768px) {
+  margin-top: 18px;
+}
+
 `;
 
 const Sort = () => {

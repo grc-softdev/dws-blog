@@ -38,11 +38,17 @@ const Meta = styled.div`
 `;
 
 const Avatar = styled.img`
-  width: 28px;
-  height: 28px;
+  width: 38px;
+  height: 38px;
+  margin-top: -2px;
   border-radius: 50%;
   object-fit: cover;
   box-shadow: 0 0 0 2px #fff;
+`;
+
+const Info = styled.div`
+display: flex;
+flex-direction: column;
 `;
 
 const AuthorName = styled.span`
@@ -143,7 +149,9 @@ const PostId = () => {
         <TopBar>
           <Button
             variant="secondary"
-            iconLeft={<FaArrowLeft />}
+            px="16px"
+            py="12px"
+            iconLeft={<FaArrowLeft style={{ marginTop: 6 }} />}
             onClick={() => navigate(-1)}
           >
             Back
@@ -155,12 +163,14 @@ const PostId = () => {
 
         <Meta>
           <Avatar src={avatar} alt={data.author?.name} />
-          <span>
-            Written by: <AuthorName>{data.author?.name}</AuthorName>
-          </span>
-          <span style={{ color: "var(--neutral-dark, #7f8185)" }}>
-            • {formattedDate(date)}
-          </span>
+          <Info>
+            <span>
+              Written by: <AuthorName>{data.author?.name}</AuthorName>
+            </span>
+            <span style={{ color: "var(--neutral-dark, #7f8185)" }}>
+              {formattedDate(date)}
+            </span>
+          </Info>
         </Meta>
 
         {data.thumbnail_url && (

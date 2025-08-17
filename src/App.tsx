@@ -66,9 +66,14 @@ const Container = styled.div`
   padding-inline: 8px;
 
   @media (min-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
     gap: 20px;
+    
+  @media (min-width: 1889px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
   }
+
   @media (min-width: 1200px) {
     grid-template-columns: repeat(3, 1fr);
     gap: 24px;
