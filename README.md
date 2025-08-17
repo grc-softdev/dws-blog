@@ -49,10 +49,6 @@ The goal is to demonstrate modern frontend development skills with React, implem
 - DWS API as the data source  
 
 
-## 🚀 How to run the project locally
-
----
-
 ## Highlights
 
 - OpenAI (GPT) for smoother and more personalized category suggestions  
@@ -67,7 +63,7 @@ The goal is to demonstrate modern frontend development skills with React, implem
 
 - DWS API as the data source  
 
-
+---
 
 ## 🚀 How to run the project locally
 
