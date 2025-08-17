@@ -33,9 +33,10 @@ const filtersSlice = createSlice({
         state.selectedCategories = state.selectedCategories.filter(
           (id) => id !== categoryId
         );
-      } else {
+      }  else {
         state.selectedCategories.push(categoryId);
-      }
+      } 
+      
     },
     setCategories(state, action: PayloadAction<string[]>) {
       state.selectedCategories = action.payload;

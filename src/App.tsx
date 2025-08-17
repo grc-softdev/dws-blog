@@ -112,6 +112,7 @@ function App() {
       });
     }
 
+    console.log({filtered, selectedCategories})
     if (selectedCategories.length > 0) {
       filtered = filtered.filter((post) =>
         post.categories.some((cat) =>
@@ -119,6 +120,9 @@ function App() {
         )
       );
     }
+
+    console.log({filtered})
+
 
     if (selectedAuthor) {
       filtered = filtered.filter((post) => post.author.id === selectedAuthor);

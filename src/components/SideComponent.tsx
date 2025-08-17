@@ -47,6 +47,9 @@ const SideComponent = ({ onApplyFilters }: SideComponentProps) => {
   const [tempCategories, setTempCategories] = useState<string[]>([]);
   const [tempAuthor, setTempAuthor] = useState<string | null>(null);
 
+
+  console.log({tempCategories})
+
   useEffect(() => {
     setTempCategories(globalCategories);
     setTempAuthor(globalAuthor);
@@ -64,7 +67,6 @@ const SideComponent = ({ onApplyFilters }: SideComponentProps) => {
   const handleApply = () => {
     dispatch(setCategories(tempCategories));
     dispatch(setAuthor(tempAuthor));
-    onApplyFilters(tempCategories.join(","), tempAuthor);
   };
 
   return (
