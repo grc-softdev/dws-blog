@@ -10,7 +10,6 @@ type DropdownProps = {
   align?: "left" | "right";
 };
 
-type WithOnCloseDropdown = { onCloseDropdown?: () => void };
 
 const Wrap = styled.div`
   position: relative;
@@ -60,15 +59,15 @@ export function Dropdown({ label, children, className, align = "left" }: Dropdow
         aria-expanded={open}
         aria-controls={id}
         onClick={() => setOpen((o) => !o)}
-        iconRight={<FiChevronDown size={16} />}   // ⬅️ aqui
+        iconRight={<FiChevronDown size={16} />}
       >
         {label}
       </Button>
 
       {open && (
         <Panel id={id} role="menu" aria-modal={false} $align={align}>
-          {React.isValidElement<WithOnCloseDropdown>(children)
-            ? React.cloneElement(children, { onCloseDropdown: () => setOpen(false) })
+          {React.isValidElement(children)
+            ? React.cloneElement(children)
             : children}
         </Panel>
       )}

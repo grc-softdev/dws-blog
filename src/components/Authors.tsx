@@ -1,16 +1,25 @@
 import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { setAuthors } from "../store/filtersSlice";
+import Loading from "./ui/Loading";
 
 type Author = {
   name: string;
   id: string;
 };
 
-type AuthorsProps = {
-  setTempAuthors: (authorId: string) => void;
-  onCloseDropdown?: () => void;
-  tempAuthors?: string[];
-};
+type AuthorsProps =
+  | {
+      isMobile: true;
+      setTempAuthors?: never;
+      tempAuthors?: never;
+    }
+  | {
+      isMobile?: false;
+      setTempAuthors: (authorId: string) => void;
+      tempAuthors?: string[];
+    };
 
 const Title = styled.h4`
   font-size: 14px;
@@ -67,8 +76,8 @@ const Item = styled.button<{ selected?: boolean }>`
 
 const Authors = ({
   setTempAuthors,
-  onCloseDropdown,
   tempAuthors,
+  isMobile
 }: AuthorsProps) => {
   const {
     data = [],
@@ -87,23 +96,33 @@ const Authors = ({
     staleTime: 5 * 60 * 1000,
   });
 
-  if (isLoading) return <p>Loading authors...</p>;
+  const { selectedAuthors } =
+  useAppSelector((s) => s.filters);
+  const dispatch = useAppDispatch();
+
+  if (isLoading) return <Loading/>;
   if (isError) return <p>Error: {error.message}</p>;
+
+  const toggle = (list: string[], id: string) =>
+    list.includes(id) ? list.filter(x => x !== id) : [...list, id];
 
   return (
     <div>
       <Title>Author</Title>
       <List>
         {data.map((author) => {
-        const isSelected = tempAuthors?.includes(author.id) ?? false;
+        const isSelected = isMobile ? selectedAuthors?.includes(author.id) ?? false : tempAuthors?.includes(author.id) ?? false;
           return (
             <li key={author.id}>
             <Item
             selected={isSelected}
               key={author.id}
               onClick={() => {
-                setTempAuthors(author.id)
-                onCloseDropdown?.();
+                if (!isMobile) {
+                  setTempAuthors(author.id);
+                  return;
+                }
+                dispatch(setAuthors(toggle(selectedAuthors, author.id)));
               }}
             >
               {author.name}

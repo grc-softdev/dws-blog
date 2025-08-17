@@ -4,8 +4,7 @@ import SideComponent from "./components/SideComponent";
 import PostCard from "./components/PostCard";
 import Sort from "./components/Sort";
 import { useMemo } from "react";
-import { useAppDispatch, useAppSelector } from "./store/hooks";
-import { toggleCategory, setAuthors } from "./store/filtersSlice";
+import { useAppSelector } from "./store/hooks";
 import { Dropdown } from "./components/ui/Dropdown";
 import Categories from "./components/Categories";
 import Authors from "./components/Authors";
@@ -81,8 +80,16 @@ const Container = styled.div`
   }
 `;
 
+const NoResults = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--neutral-dark);
+`;
+
 function App() {
-  const dispatch = useAppDispatch();
   const { order, searchTerm, selectedCategories, selectedAuthors } =
     useAppSelector((s) => s.filters);
     console.log({selectedCategories})
@@ -139,22 +146,11 @@ function App() {
         <RightArea>
           <MobileFilters>
             <Dropdown label="Category">
-              <Categories
-                isMobile
-
-                // tempCategories={tempCategories}
-                // onSelectCategory={(id: string) => {
-                //   dispatch(toggleCategory(id));
-                // }}
-              />
+              <Categories isMobile />
             </Dropdown>
 
             <Dropdown label="Author">
-              <Authors
-                onSelectAuthor={(id: string) => {
-                  dispatch(setAuthors(id));
-                }}
-              />
+              <Authors isMobile />
             </Dropdown>
           </MobileFilters>
 
@@ -167,7 +163,7 @@ function App() {
 
         <Container>
           {filteredAndSortedPosts.length === 0 ? (
-            <p>No results.</p>
+            <Wrapper><NoResults>No results.</NoResults></Wrapper>
           ) : (
             filteredAndSortedPosts.map((post) => (
               <PostCard

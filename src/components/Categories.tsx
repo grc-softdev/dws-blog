@@ -2,17 +2,24 @@ import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { setCategories } from "../store/filtersSlice";
+import Loading from "./ui/Loading";
 
 type Category = {
   name: string;
   id: string;
 };
 
-type CategoriesProps = {
-  setTempCategories: (categoryId: string) => void;
-  onCloseDropdown?: () => void;
-  tempCategories?: string[];
-};
+type CategoriesProps =
+  | {
+      isMobile: true;
+      setTempCategories?: never;
+      tempCategories?: never;
+    }
+  | {
+      isMobile?: false;
+      setTempCategories: (categoryId: string) => void;
+      tempCategories?: string[];
+    };
 
 const Title = styled.h4`
   font-size: 14px;
@@ -70,8 +77,7 @@ const Item = styled.button<{ selected?: boolean }>`
 const Categories = ({
   setTempCategories,
   tempCategories,
-  isMobile
- 
+  isMobile,
 }: CategoriesProps) => {
   const {
     data = [],
@@ -90,15 +96,13 @@ const Categories = ({
     staleTime: 1000 * 60 * 5,
   });
 
-  const { selectedCategories } =
-  useAppSelector((s) => s.filters);
+  const { selectedCategories } = useAppSelector((s) => s.filters);
   const dispatch = useAppDispatch();
 
+  const toggle = (list: string[], id: string) =>
+    list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
 
-
-
-
-  if (isLoading) return <div>loading...</div>;
+  if (isLoading) return <Loading />;
   if (isError) return <div>Error: {error.message}</div>;
 
   return (
@@ -106,27 +110,21 @@ const Categories = ({
       <Title>Category</Title>
       <List>
         {data.map((category) => {
-          const isSelected = isMobile ? selectedCategories?.includes(category.id) ?? false : tempCategories?.includes(category.id) ?? false;
+          const isSelected = isMobile
+            ? selectedCategories?.includes(category.id) ?? false
+            : tempCategories?.includes(category.id) ?? false;
           return (
             <li key={category.id}>
               <Item
                 selected={isSelected}
                 onClick={() => {
-
-                  if (isMobile) {
-
-                    if (!selectedCategories.includes(category.id)) {
-                      const updatedCategories = [...selectedCategories, category.id]
-                      dispatch(setCategories(updatedCategories));
-
-                    } else {
-                      const updatedCategories = selectedCategories.filter((cat) => category.id !== cat)
-                      dispatch(setCategories(updatedCategories));
-                    }
-
-                  } else {
+                  if (!isMobile) {
                     setTempCategories(category.id);
+                    return;
                   }
+                  dispatch(
+                    setCategories(toggle(selectedCategories, category.id))
+                  );
                 }}
               >
                 {category.name}
