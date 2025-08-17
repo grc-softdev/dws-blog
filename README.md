@@ -61,6 +61,7 @@ npm run dev
 Then access: http://localhost:3000
 
 <h2>📌 Improvements</h2>
+
 - We have some prop drilling that can be extracted to the store.
 - We can add more tests, added just a few as an example, to outline how it can be done.
 - Could have made more abstractions to avoid repetition.
