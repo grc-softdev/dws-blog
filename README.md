@@ -6,13 +6,15 @@ This is a *take-home* project built with [React](https://reactjs.org/) and Redux
 
 The goal is to demonstrate modern frontend development skills with React, implementing all the requested requirements:
 
-✅ Home page with a list of posts and category/author filters  
-✅ Sort filter to view posts from newest to oldest  
-✅ Search page with dynamic results  
-✅ Post page with full content and related data  
-✅ API consumption with DWS data integration  
-✅ Test with RTL and Vitest
-✅ Used Redux to handle filters
+## Requirements
+
+- [x] Used Redux to handle filters  
+- [x] Test with RTL and Vitest  
+- [x] Home page with a list of posts and category/author filters  
+- [x] Sort filter to view posts from newest to oldest  
+- [x] Search page with dynamic results  
+- [x] Post page with full content and related data  
+- [x] API consumption with DWS data integration  
 
 👉 [Check out the live project](https://dws-blog-black.vercel.app/)
 
