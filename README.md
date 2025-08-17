@@ -16,37 +16,21 @@ The goal is to demonstrate modern frontend development skills with React, implem
 
 <p align="center">
   <figure style="display:inline-block; margin:10px;">
-    <figcaption align="center"><strong>Carousel</strong></figcaption>
+    <figcaption align="center"><strong>App</strong></figcaption>
     <img src="public/screenshots/app.png" alt="Home page" width="400px" />
   </figure>
   
   <figure style="display:inline-block; margin:10px;">
-    <figcaption align="center"><strong>Anime Details</strong></figcaption>
+    <figcaption align="center"><strong>Post Details</strong></figcaption>
   </figure>
     <img src="public/screenshots/pageId.png" alt="Details of an anime" width="400px" />
     
   <figure style="display:inline-block; margin:10px;">
-    <figcaption align="center"><strong>Search Results</strong></figcaption>
+    <figcaption align="center"><strong>Mobile</strong></figcaption>
     <img src="public/screenshots/mobile.png" alt="Search page with filtered results" width="400px" />
     
   </figure>
 </p>
-
----
-
-## Highlights
-
-- OpenAI (GPT) for smoother and more personalized category suggestions  
-
-- Redux Toolkit for global state management  
-
-- React Query for efficient API data fetching and caching  
-
-- Styled buttons  
-
-- CSS for styling and responsiveness  
-
-- DWS API as the data source  
 
 
 ## Highlights
