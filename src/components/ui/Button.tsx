@@ -22,8 +22,6 @@ const baseStyles = css<{ $full?: boolean; $h?: number | string; $px?: number | s
   justify-content: center;
   gap: 8px;
   margin-top: 20px;
-
-  /* 🔽 Somente height e padding são dinâmicos */
   height: ${({ $h }) => toUnit($h, "40px")};
   padding: ${({ $py, $px }) => `${toUnit($py, "0")} ${toUnit($px, "16px")}`};
 

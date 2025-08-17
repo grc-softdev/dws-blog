@@ -19,11 +19,11 @@ const Section = styled.div`
   flex-direction: column;
   gap: 16px;
   border: 1px solid var(--neutral-light);
-  
+
   @media (max-width: 767px) {
     display: none;
   }
-  
+
   @media (width: 767px) {
     min-width: 280px;
   }
@@ -51,7 +51,11 @@ const SideComponent = ({ onApplyFilters }: SideComponentProps) => {
       <Categories onSelectCategory={setTempCategory} />
       <Authors onSelectAuthor={setTempAuthor} />
 
-      <Button  py="12px" fullWidth onClick={() => onApplyFilters(tempCategory, tempAuthor)}>
+      <Button
+        py="12px"
+        fullWidth
+        onClick={() => onApplyFilters(tempCategory, tempAuthor)}
+      >
         Apply filters
       </Button>
     </Section>
