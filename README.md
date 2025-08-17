@@ -1,69 +1,93 @@
-# React + TypeScript + Vite
+<h1>DWS Project</h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<h3>Description</h3>
 
-Currently, two official plugins are available:
+This is a *take-home* project built with [React](https://reactjs.org/) and Redux Toolkit, following the instructions provided for this stage of the process, and consuming the given API.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The goal is to demonstrate modern frontend development skills with React, implementing all the requested requirements:
 
-## Expanding the ESLint configuration
+✅ Home page with a list of posts and category/author filters  
+✅ Sort filter to view posts from newest to oldest  
+✅ Search page with dynamic results  
+✅ Post page with full content and related data  
+✅ API consumption with DWS data integration  
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+👉 [Check out the live project](https://dws-project.vercel.app/)
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+<p align="center">
+  <figure style="display:inline-block; margin:10px;">
+    <figcaption align="center"><strong>Carousel</strong></figcaption>
+    <img src="public/screenshots/app.png" alt="Home page" width="400px" />
+  </figure>
+  
+  <figure style="display:inline-block; margin:10px;">
+    <figcaption align="center"><strong>Anime Details</strong></figcaption>
+  </figure>
+    <img src="public/screenshots/pageId.png" alt="Details of an anime" width="400px" />
+    
+  <figure style="display:inline-block; margin:10px;">
+    <figcaption align="center"><strong>Search Results</strong></figcaption>
+    <img src="public/screenshots/mobile.png" alt="Search page with filtered results" width="400px" />
+    
+  </figure>
+</p>
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Highlights
+
+- OpenAI (GPT) for smoother and more personalized category suggestions  
+
+- Redux Toolkit for global state management  
+
+- React Query for efficient API data fetching and caching  
+
+- Styled buttons  
+
+- CSS for styling and responsiveness  
+
+- DWS API as the data source  
+
+
+## 🚀 How to run the project locally
+
+---
+
+## Highlights
+
+- OpenAI (GPT) for smoother and more personalized category suggestions  
+
+- Redux Toolkit for global state management  
+
+- React Query for efficient API data fetching and caching  
+
+- Styled buttons  
+
+- CSS for styling and responsiveness  
+
+- DWS API as the data source  
+
+
+
+## 🚀 How to run the project locally
+
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Environment Variables
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Create a .env file with the following variable:
+```bash
+OPENAI_API_KEY=
 ```
+
+
+Then access: http://localhost:3000
+
+<h2>📌 Improvements</h2>
+- The code can be refactored by removing components that became unnecessary, such as parts of the Context.
+
+<h2>📌 Discussion Points</h2> 
+- Some project instructions could have been more specific, such as the absence of a "clear filters" button.
