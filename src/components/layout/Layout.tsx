@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const Wrapper = styled.main`
   min-height: 100vh;
-  min-width: 375px;
   padding-bottom: 100px;
   padding-left: 12px;
   padding-right: 16px;

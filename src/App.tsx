@@ -11,6 +11,7 @@ import Categories from "./components/Categories";
 import Authors from "./components/Authors";
 import { usePosts } from "./hooks/usePosts";
 import { Wrapper } from "./components/layout/Layout";
+import Loading from "./components/ui/Loading";
 
 const TopBar = styled.section`
   display: flex;
@@ -86,14 +87,6 @@ function App() {
     useAppSelector((s) => s.filters);
   const { data, isLoading, isError, error } = usePosts();
 
-  const handleApplyFilters = (
-    category: string,
-    author: string | null
-  ) => {
-    dispatch(toggleCategory(category));
-    dispatch(setAuthor(author));
-  };
-
   const filteredAndSortedPosts = useMemo(() => {
     if (!data) return [];
     let filtered = data;
@@ -112,7 +105,6 @@ function App() {
       });
     }
 
-    console.log({filtered, selectedCategories})
     if (selectedCategories.length > 0) {
       filtered = filtered.filter((post) =>
         post.categories.some((cat) =>
@@ -121,24 +113,10 @@ function App() {
       );
     }
 
-    console.log({filtered})
-
-
     if (selectedAuthors.length > 0) {
-
-
       filtered = filtered.filter((post) => {
-
         const authorId = post.author.id
-
-        console.log({selectedAuthors, authorId})
-
-
         return selectedAuthors.includes(authorId)
-        
-
-
-
       })
     }
 
@@ -149,7 +127,7 @@ function App() {
     );
   }, [data, order, selectedCategories, selectedAuthors, searchTerm]);
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Loading />;
   if (isError) return <p>Error: {(error as Error).message}</p>;
 
   return (
@@ -170,7 +148,7 @@ function App() {
 
             <Dropdown label="Author">
               <Authors
-                onSelectAuthor={(id: string | null) => {
+                onSelectAuthor={(id: string) => {
                   dispatch(setAuthors(id));
                 }}
               />
@@ -182,7 +160,7 @@ function App() {
       </TopBar>
 
       <Sections>
-        <SideComponent onApplyFilters={handleApplyFilters} />
+        <SideComponent/>
 
         <Container>
           {filteredAndSortedPosts.length === 0 ? (

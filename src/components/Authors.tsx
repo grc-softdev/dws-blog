@@ -7,8 +7,9 @@ type Author = {
 };
 
 type AuthorsProps = {
-  onSelectAuthor: (categoryId: string) => void;
+  setTempAuthors: (authorId: string) => void;
   onCloseDropdown?: () => void;
+  tempAuthors?: string[];
 };
 
 const Title = styled.h4`
@@ -17,23 +18,50 @@ const Title = styled.h4`
   margin: 12px 0 8px;
 `;
 
-const List = styled.div`
+const List = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  li + li {
+    border-top: 1px solid var(--neutral-extra-light);
+  }
 `;
 
-const Item = styled.div<{ $selected?: boolean }>`
-  padding: 8px 0;
-  cursor: pointer;
-  border-bottom: 1px solid #eee;
+const Item = styled.button<{ selected?: boolean }>`
+  width: 100%;
+  text-align: left;
+  background: ${({ selected }) =>
+    selected
+      ? "color-mix(in srgb, var(--accent-light) 5%, transparent)"
+      : "transparent"};
+
+  background: ${({ selected }) => (selected ? "accent-dark" : "transparent")};
+
+  color: ${({ selected }) =>
+    selected ? "var(--accent-dark)" : "var(--neutral-darkest)"};
+  border: ${({ selected }) =>
+    selected ? "1px solid var(--accent-dark)" : "1px solid transparent"};
+  border-radius: 12px;
+  padding: 12px 16px;
   font-size: 14px;
+  font-weight: ${({ selected }) => (selected ? 600 : 400)};
+  cursor: pointer;
+  outline: none;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
 
-  color: ${({ $selected }) => ($selected ? "var(--secondary-medium)" : "#333")};
-  font-weight: ${({ $selected }) => ($selected ? 600 : 400)};
+  &:hover {
+    color: var(--accent-dark);
+    background: ${({ selected }) =>
+      selected
+        ? "color-mix(in srgb, var(--accent-light) 5%, transparent)"
+        : "transparent"};
+  }
 
-  &:last-child {
-    border-bottom: none;
+  &:focus-visible {
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-light) 40%, white);
+    border-color: var(--accent-dark);
   }
 `;
 
@@ -67,30 +95,20 @@ const Authors = ({
       <Title>Author</Title>
       <List>
         {data.map((author) => {
-
-
         const isSelected = tempAuthors?.includes(author.id) ?? false;
-
-            // console.log({isSelectedAuthor, tempAuthor, author})
-
-          console.log({tempAuthors})
           return (
+            <li key={author.id}>
             <Item
-              $selected={isSelected}
+            selected={isSelected}
               key={author.id}
               onClick={() => {
-                setTempAuthors((prev) =>
-                  prev.includes(author.id)
-                    ? prev.filter((id) => id !== author.id) 
-                    : [...prev, author.id]
-                );
-
-
+                setTempAuthors(author.id)
                 onCloseDropdown?.();
               }}
             >
               {author.name}
             </Item>
+            </li>
           );
         })}
       </List>

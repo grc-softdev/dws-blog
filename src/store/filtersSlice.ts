@@ -7,7 +7,7 @@ type FiltersState = {
   order: Order;
   searchTerm: string;
   selectedCategories: string[];
-  selectedAuthor: string | null;
+  selectedAuthors: string[];
 };
 
 const initialState: FiltersState = {
@@ -41,7 +41,7 @@ const filtersSlice = createSlice({
     setCategories(state, action: PayloadAction<string[]>) {
       state.selectedCategories = action.payload;
     },
-    setAuthors(state, action: PayloadAction<string | null>) {
+    setAuthors(state, action: PayloadAction<string[]>) {
       state.selectedAuthors = action.payload;
     },
     clearFilters(state) {

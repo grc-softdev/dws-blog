@@ -30,7 +30,7 @@ const SortButton = styled.button<{ order: OrderProps["order"] }>`
   padding: 4px 8px;
   border-radius: 16px;
   background-color: transparent;
-  margin-top: 2px;
+  margin-left: 1px;
   border: none;
   cursor: pointer;
   color: ${({ order }) =>

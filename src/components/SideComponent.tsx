@@ -2,14 +2,10 @@ import styled from "styled-components";
 import Authors from "./Authors";
 import Categories from "./Categories";
 import { GiSettingsKnobs } from "react-icons/gi";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "./ui/Button";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { useAppDispatch } from "../store/hooks";
 import { setCategories, setAuthors } from "../store/filtersSlice";
-
-type SideComponentProps = {
-  onApplyFilters: (category: string, author: string | null) => void;
-};
 
 const Section = styled.div`
   background-color: #fff;
@@ -40,22 +36,25 @@ const Header = styled.h3`
   margin: 0;
 `;
 
-const SideComponent = ({ onApplyFilters }: SideComponentProps) => {
+const SideComponent = () => {
   const dispatch = useAppDispatch();
 
   const [tempCategories, setTempCategories] = useState<string[]>([]);
   const [tempAuthors, setTempAuthors] = useState<string[]>([]);
 
-
-
-
-
-
   const handleToggleCategory = (categoryId: string) => {
     setTempCategories((prev) =>
       prev.includes(categoryId)
-        ? prev.filter((id) => id !== categoryId) 
+        ? prev.filter((id) => id !== categoryId)
         : [...prev, categoryId]
+    );
+  };
+
+  const handleToggleAuthor = (authorId: string) => {
+    setTempAuthors((prev) =>
+      prev.includes(authorId)
+        ? prev.filter((id) => id !== authorId)
+        : [...prev, authorId]
     );
   };
 
@@ -69,14 +68,13 @@ const SideComponent = ({ onApplyFilters }: SideComponentProps) => {
       <Header>
         <GiSettingsKnobs /> Filters
       </Header>
-      <Categories onSelectCategories={handleToggleCategory} selectedCategories={tempCategories}/>
-      <Authors setTempAuthors={setTempAuthors} tempAuthors={tempAuthors}/>
+      <Categories
+        setTempCategories={handleToggleCategory}
+        tempCategories={tempCategories}
+      />
+      <Authors setTempAuthors={handleToggleAuthor} tempAuthors={tempAuthors} />
 
-      <Button
-        py="12px"
-        fullWidth
-        onClick={handleApply}
-      >
+      <Button py="12px" fullWidth onClick={handleApply}>
         Apply filters
       </Button>
     </Section>

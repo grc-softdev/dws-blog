@@ -25,7 +25,7 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   width: 314px;
-  height: 425px;
+  height: 423px;
 `;
 
 const CardImage = styled.div`
@@ -96,8 +96,6 @@ const PostCard = ({
   id,
 }: PostCardProps) => {
 
-  const apply = "apply";
-
   return (
     <Link to={`/posts/${id}`} style={{ textDecoration: "none" }}>
       <Card>
@@ -115,15 +113,12 @@ const PostCard = ({
           <CardDescription>{text}</CardDescription>
 
           <CardTags>
-            {categories?.length ? (
-              categories.map((category) => (
+            {categories.map((category) => (
                 <span className="tag" key={category.id}>
                   {category.name}
                 </span>
               ))
-            ) : (
-              <span className="tag">{apply}</span>
-            )}
+           }
           </CardTags>
         </CardContent>
       </Card>

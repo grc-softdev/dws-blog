@@ -7,6 +7,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { usePost, usePosts } from "../hooks/usePosts";
 import { formattedDate } from "../utils/format";
 import { Grid, Wrapper } from "./layout/Layout";
+import Loading from "./ui/Loading";
 
 const Container = styled.div`
   max-width: 1100px;
@@ -123,7 +124,7 @@ const PostId = () => {
   const postById = usePost(id);
   const posts = usePosts();
 
-  if (postById.isLoading) return <p>Loading...</p>;
+  if (postById.isLoading) return <Loading />;
   if (postById.isError)
     return <p>Error: {(postById.error as Error).message}</p>;
 

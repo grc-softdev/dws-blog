@@ -7,9 +7,9 @@ type Category = {
 };
 
 type CategoriesProps = {
-  onSelectCategories: (categoryId: string) => void;
+  setTempCategories: (categoryId: string) => void;
   onCloseDropdown?: () => void;
-  selectedCategories?: string[];
+  tempCategories?: string[];
 };
 
 const Title = styled.h4`
@@ -66,8 +66,8 @@ const Item = styled.button<{ selected?: boolean }>`
 `;
 
 const Categories = ({
-  onSelectCategories,
-  selectedCategories,
+  setTempCategories,
+  tempCategories,
  
 }: CategoriesProps) => {
   const {
@@ -87,7 +87,7 @@ const Categories = ({
     staleTime: 1000 * 60 * 5,
   });
 
-  if (isLoading) return <div>Loading Categories...</div>;
+  if (isLoading) return <div>loading...</div>;
   if (isError) return <div>Error: {error.message}</div>;
 
   return (
@@ -95,13 +95,13 @@ const Categories = ({
       <Title>Category</Title>
       <List>
         {data.map((category) => {
-          const isSelected = selectedCategories?.includes(category.id) ?? false;
+          const isSelected = tempCategories?.includes(category.id) ?? false;
           return (
             <li key={category.id}>
               <Item
                 selected={isSelected}
                 onClick={() => {
-                  onSelectCategories(category.id);
+                  setTempCategories(category.id);
                 }}
               >
                 {category.name}
