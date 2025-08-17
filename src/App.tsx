@@ -5,7 +5,7 @@ import PostCard from "./components/PostCard";
 import Sort from "./components/Sort";
 import { useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
-import { toggleCategory, setAuthor } from "./store/filtersSlice";
+import { toggleCategory, setAuthors } from "./store/filtersSlice";
 import { Dropdown } from "./components/ui/Dropdown";
 import Categories from "./components/Categories";
 import Authors from "./components/Authors";
@@ -82,7 +82,7 @@ const Container = styled.div`
 
 function App() {
   const dispatch = useAppDispatch();
-  const { order, searchTerm, selectedCategories, selectedAuthor } =
+  const { order, searchTerm, selectedCategories, selectedAuthors } =
     useAppSelector((s) => s.filters);
   const { data, isLoading, isError, error } = usePosts();
 
@@ -124,8 +124,22 @@ function App() {
     console.log({filtered})
 
 
-    if (selectedAuthor) {
-      filtered = filtered.filter((post) => post.author.id === selectedAuthor);
+    if (selectedAuthors.length > 0) {
+
+
+      filtered = filtered.filter((post) => {
+
+        const authorId = post.author.id
+
+        console.log({selectedAuthors, authorId})
+
+
+        return selectedAuthors.includes(authorId)
+        
+
+
+
+      })
     }
 
     return [...filtered].sort((a, b) =>
@@ -133,7 +147,7 @@ function App() {
         ? a.title.localeCompare(b.title)
         : b.title.localeCompare(a.title)
     );
-  }, [data, order, selectedCategories, selectedAuthor, searchTerm]);
+  }, [data, order, selectedCategories, selectedAuthors, searchTerm]);
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error: {(error as Error).message}</p>;
@@ -156,9 +170,8 @@ function App() {
 
             <Dropdown label="Author">
               <Authors
-                selectedId={selectedAuthor ?? undefined}
                 onSelectAuthor={(id: string | null) => {
-                  dispatch(setAuthor(id));
+                  dispatch(setAuthors(id));
                 }}
               />
             </Dropdown>

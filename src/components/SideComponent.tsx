@@ -5,7 +5,7 @@ import { GiSettingsKnobs } from "react-icons/gi";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/Button";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { setCategories, setAuthor } from "../store/filtersSlice";
+import { setCategories, setAuthors } from "../store/filtersSlice";
 
 type SideComponentProps = {
   onApplyFilters: (category: string, author: string | null) => void;
@@ -42,18 +42,13 @@ const Header = styled.h3`
 
 const SideComponent = ({ onApplyFilters }: SideComponentProps) => {
   const dispatch = useAppDispatch();
-  const { selectedCategories: globalCategories, selectedAuthor: globalAuthor } = useAppSelector((s) => s.filters);
 
   const [tempCategories, setTempCategories] = useState<string[]>([]);
-  const [tempAuthor, setTempAuthor] = useState<string | null>(null);
+  const [tempAuthors, setTempAuthors] = useState<string[]>([]);
 
 
-  console.log({tempCategories})
 
-  useEffect(() => {
-    setTempCategories(globalCategories);
-    setTempAuthor(globalAuthor);
-  }, [globalCategories, globalAuthor]);
+
 
 
   const handleToggleCategory = (categoryId: string) => {
@@ -66,7 +61,7 @@ const SideComponent = ({ onApplyFilters }: SideComponentProps) => {
 
   const handleApply = () => {
     dispatch(setCategories(tempCategories));
-    dispatch(setAuthor(tempAuthor));
+    dispatch(setAuthors(tempAuthors));
   };
 
   return (
@@ -75,7 +70,7 @@ const SideComponent = ({ onApplyFilters }: SideComponentProps) => {
         <GiSettingsKnobs /> Filters
       </Header>
       <Categories onSelectCategories={handleToggleCategory} selectedCategories={tempCategories}/>
-      <Authors onSelectAuthor={setTempAuthor} />
+      <Authors setTempAuthors={setTempAuthors} tempAuthors={tempAuthors}/>
 
       <Button
         py="12px"

@@ -14,7 +14,7 @@ const initialState: FiltersState = {
   order: "newest",
   searchTerm: "",
   selectedCategories: [],
-  selectedAuthor: null,
+  selectedAuthors: [],
 };
 
 const filtersSlice = createSlice({
@@ -41,11 +41,11 @@ const filtersSlice = createSlice({
     setCategories(state, action: PayloadAction<string[]>) {
       state.selectedCategories = action.payload;
     },
-    setAuthor(state, action: PayloadAction<string | null>) {
-      state.selectedAuthor = action.payload;
+    setAuthors(state, action: PayloadAction<string | null>) {
+      state.selectedAuthors = action.payload;
     },
     clearFilters(state) {
-      state.selectedAuthor = null;
+      state.selectedAuthors = [];
       state.selectedCategories = [];
       state.searchTerm = "";
       state.order = "newest";
@@ -53,5 +53,5 @@ const filtersSlice = createSlice({
   },
 });
 
-export const { setOrder, setSearchTerm, toggleCategory, setCategories, setAuthor, clearFilters } = filtersSlice.actions;
+export const { setOrder, setSearchTerm, toggleCategory, setCategories, setAuthors, clearFilters } = filtersSlice.actions;
 export default filtersSlice.reducer;

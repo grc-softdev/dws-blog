@@ -9,7 +9,6 @@ type Author = {
 type AuthorsProps = {
   onSelectAuthor: (categoryId: string) => void;
   onCloseDropdown?: () => void;
-  selectedId?: string; 
 };
 
 const Title = styled.h4`
@@ -36,14 +35,24 @@ const Item = styled.div<{ $selected?: boolean }>`
   &:last-child {
     border-bottom: none;
   }
-  
 `;
 
-const Authors = ({ onSelectAuthor, onCloseDropdown }: AuthorsProps) => {
-  const { data = [], isLoading, isError, error } = useQuery<Author[], Error>({
+const Authors = ({
+  setTempAuthors,
+  onCloseDropdown,
+  tempAuthors,
+}: AuthorsProps) => {
+  const {
+    data = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery<Author[], Error>({
     queryKey: ["authors"],
     queryFn: async () => {
-      const res = await fetch("https://tech-test-backend.dwsbrazil.io/authors/");
+      const res = await fetch(
+        "https://tech-test-backend.dwsbrazil.io/authors/"
+      );
       if (!res.ok) throw new Error("Error to search authors");
       return res.json();
     },
@@ -57,17 +66,33 @@ const Authors = ({ onSelectAuthor, onCloseDropdown }: AuthorsProps) => {
     <div>
       <Title>Author</Title>
       <List>
-        {data.map((author) => (
-          <Item
-            key={author.id}
-            onClick={() => {
-              onSelectAuthor(author.id)
-              onCloseDropdown?.()
-            }}
-          >
-            {author.name}
-          </Item>
-        ))}
+        {data.map((author) => {
+
+
+        const isSelected = tempAuthors?.includes(author.id) ?? false;
+
+            // console.log({isSelectedAuthor, tempAuthor, author})
+
+          console.log({tempAuthors})
+          return (
+            <Item
+              $selected={isSelected}
+              key={author.id}
+              onClick={() => {
+                setTempAuthors((prev) =>
+                  prev.includes(author.id)
+                    ? prev.filter((id) => id !== author.id) 
+                    : [...prev, author.id]
+                );
+
+
+                onCloseDropdown?.();
+              }}
+            >
+              {author.name}
+            </Item>
+          );
+        })}
       </List>
     </div>
   );
