@@ -12,6 +12,7 @@ The goal is to demonstrate modern frontend development skills with React, implem
 ✅ Post page with full content and related data  
 ✅ API consumption with DWS data integration  
 ✅ Test with RTL and Vitest
+✅ Used Redux to handle filters
 
 👉 [Check out the live project](https://dws-blog-black.vercel.app/)
 
@@ -57,18 +58,23 @@ npm install
 npm run dev
 ```
 
-## Environment Variables
-
-Create a .env file with the following variable:
-```bash
-OPENAI_API_KEY=
-```
-
-
 Then access: http://localhost:3000
 
 <h2>📌 Improvements</h2>
-- The code can be refactored by removing components that became unnecessary, such as parts of the Context.
+- We have some prop drilling that can be extracted to the store.
+- We can add more tests, added just a few as an example, to outline how it can be done.
+- Could have made more abstractions to avoid repetition.
+- Had to compromise on time vs quality at times.
 
 <h2>📌 Discussion Points</h2> 
-- Some project instructions could have been more specific, such as the absence of a "clear filters" button on desktop version.
+
+The below are points that should/could have been discussed. We can talk about them sync, but in a nutshell, some decisions had to be made.
+
+- There is no "clear filters" option on the desktop (but we have one on the mobile).
+- Several actions were not outlined in the mobile (e.g., Search)
+- How the filters should behave: additive vs exclusive.
+- How the filters should behave upon deselection on the desktop.
+- Category list on mobile example was not clear.
+- Dropdown behavior on mobile was atypical (stays on top of cards).
+- Dropdown size was not outlined for mobile (too big for mobile).
+- "Selected" categories/authors "chips" (post-selection) was not clear.
