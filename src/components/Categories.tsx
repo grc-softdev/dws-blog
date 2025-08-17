@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
-import { useAppSelector } from "../store/hooks";
 
 type Category = {
   name: string;
@@ -8,9 +7,9 @@ type Category = {
 };
 
 type CategoriesProps = {
-  onSelectCategory: (categoryId: string) => void;
+  onSelectCategories: (categoryId: string) => void;
   onCloseDropdown?: () => void;
-  selectedCategory?: string;
+  selectedCategories?: string[];
 };
 
 const Title = styled.h4`
@@ -67,11 +66,10 @@ const Item = styled.button<{ selected?: boolean }>`
 `;
 
 const Categories = ({
-  onSelectCategory,
-  onCloseDropdown,
+  onSelectCategories,
+  selectedCategories,
  
 }: CategoriesProps) => {
-  const { selectedCategory  } = useAppSelector((s) => s.filters);
   const {
     data = [],
     error,
@@ -97,13 +95,13 @@ const Categories = ({
       <Title>Category</Title>
       <List>
         {data.map((category) => {
+          const isSelected = selectedCategories?.includes(category.id) ?? false;
           return (
             <li key={category.id}>
               <Item
-                selected={category.id === selectedCategory}
+                selected={isSelected}
                 onClick={() => {
-                  onSelectCategory(category.id);
-                  onCloseDropdown?.();
+                  onSelectCategories(category.id);
                 }}
               >
                 {category.name}

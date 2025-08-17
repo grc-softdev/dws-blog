@@ -2,11 +2,13 @@ import styled from "styled-components";
 import Authors from "./Authors";
 import Categories from "./Categories";
 import { GiSettingsKnobs } from "react-icons/gi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/Button";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { setCategories, setAuthor } from "../store/filtersSlice";
 
 type SideComponentProps = {
-  onApplyFilters: (category: string | null, author: string | null) => void;
+  onApplyFilters: (category: string, author: string | null) => void;
 };
 
 const Section = styled.div`
@@ -39,22 +41,44 @@ const Header = styled.h3`
 `;
 
 const SideComponent = ({ onApplyFilters }: SideComponentProps) => {
-  const [tempCategory, setTempCategory] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const { selectedCategories: globalCategories, selectedAuthor: globalAuthor } = useAppSelector((s) => s.filters);
+
+  const [tempCategories, setTempCategories] = useState<string[]>([]);
   const [tempAuthor, setTempAuthor] = useState<string | null>(null);
+
+  useEffect(() => {
+    setTempCategories(globalCategories);
+    setTempAuthor(globalAuthor);
+  }, [globalCategories, globalAuthor]);
+
+
+  const handleToggleCategory = (categoryId: string) => {
+    setTempCategories((prev) =>
+      prev.includes(categoryId)
+        ? prev.filter((id) => id !== categoryId) 
+        : [...prev, categoryId]
+    );
+  };
+
+  const handleApply = () => {
+    dispatch(setCategories(tempCategories));
+    dispatch(setAuthor(tempAuthor));
+    onApplyFilters(tempCategories.join(","), tempAuthor);
+  };
 
   return (
     <Section>
       <Header>
         <GiSettingsKnobs /> Filters
       </Header>
-
-      <Categories onSelectCategory={setTempCategory} />
+      <Categories onSelectCategories={handleToggleCategory} selectedCategories={tempCategories}/>
       <Authors onSelectAuthor={setTempAuthor} />
 
       <Button
         py="12px"
         fullWidth
-        onClick={() => onApplyFilters(tempCategory, tempAuthor)}
+        onClick={handleApply}
       >
         Apply filters
       </Button>

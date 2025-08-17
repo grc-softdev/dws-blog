@@ -5,7 +5,7 @@ import PostCard from "./components/PostCard";
 import Sort from "./components/Sort";
 import { useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
-import { setCategory, setAuthor } from "./store/filtersSlice";
+import { toggleCategory, setAuthor } from "./store/filtersSlice";
 import { Dropdown } from "./components/ui/Dropdown";
 import Categories from "./components/Categories";
 import Authors from "./components/Authors";
@@ -82,15 +82,15 @@ const Container = styled.div`
 
 function App() {
   const dispatch = useAppDispatch();
-  const { order, searchTerm, selectedCategory, selectedAuthor } =
+  const { order, searchTerm, selectedCategories, selectedAuthor } =
     useAppSelector((s) => s.filters);
   const { data, isLoading, isError, error } = usePosts();
 
   const handleApplyFilters = (
-    category: string | null,
+    category: string,
     author: string | null
   ) => {
-    dispatch(setCategory(category));
+    dispatch(toggleCategory(category));
     dispatch(setAuthor(author));
   };
 
@@ -112,9 +112,11 @@ function App() {
       });
     }
 
-    if (selectedCategory) {
+    if (selectedCategories.length > 0) {
       filtered = filtered.filter((post) =>
-        post.categories.some((cat) => cat.id === selectedCategory)
+        post.categories.some((cat) =>
+          selectedCategories.includes(cat.id)
+        )
       );
     }
 
@@ -127,7 +129,7 @@ function App() {
         ? a.title.localeCompare(b.title)
         : b.title.localeCompare(a.title)
     );
-  }, [data, order, selectedCategory, selectedAuthor, searchTerm]);
+  }, [data, order, selectedCategories, selectedAuthor, searchTerm]);
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error: {(error as Error).message}</p>;
@@ -141,9 +143,9 @@ function App() {
           <MobileFilters>
             <Dropdown label="Category">
               <Categories
-                selectedId={selectedCategory ?? undefined}
-                onSelectCategory={(id: string | null) => {
-                  dispatch(setCategory(id));
+                selectedCategories={selectedCategories}
+                onSelectCategory={(id: string) => {
+                  dispatch(toggleCategory(id));
                 }}
               />
             </Dropdown>

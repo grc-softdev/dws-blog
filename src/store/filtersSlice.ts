@@ -6,14 +6,14 @@ export type Order = "newest" | "oldest";
 type FiltersState = {
   order: Order;
   searchTerm: string;
-  selectedCategory: string | null;
+  selectedCategories: string[];
   selectedAuthor: string | null;
 };
 
 const initialState: FiltersState = {
   order: "newest",
   searchTerm: "",
-  selectedCategory: null,
+  selectedCategories: [],
   selectedAuthor: null,
 };
 
@@ -27,20 +27,30 @@ const filtersSlice = createSlice({
     setSearchTerm(state, action: PayloadAction<string>) {
       state.searchTerm = action.payload;
     },
-    setCategory(state, action: PayloadAction<string | null>) {
-      state.selectedCategory = action.payload;
+    toggleCategory(state, action: PayloadAction<string>) {
+      const categoryId = action.payload;
+      if (state.selectedCategories.includes(categoryId)) {
+        state.selectedCategories = state.selectedCategories.filter(
+          (id) => id !== categoryId
+        );
+      } else {
+        state.selectedCategories.push(categoryId);
+      }
+    },
+    setCategories(state, action: PayloadAction<string[]>) {
+      state.selectedCategories = action.payload;
     },
     setAuthor(state, action: PayloadAction<string | null>) {
       state.selectedAuthor = action.payload;
     },
     clearFilters(state) {
       state.selectedAuthor = null;
-      state.selectedCategory = null;
+      state.selectedCategories = [];
       state.searchTerm = "";
       state.order = "newest";
     }
   },
 });
 
-export const { setOrder, setSearchTerm, setCategory, setAuthor, clearFilters } = filtersSlice.actions;
+export const { setOrder, setSearchTerm, toggleCategory, setCategories, setAuthor, clearFilters } = filtersSlice.actions;
 export default filtersSlice.reducer;
