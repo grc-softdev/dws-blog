@@ -85,6 +85,7 @@ function App() {
   const dispatch = useAppDispatch();
   const { order, searchTerm, selectedCategories, selectedAuthors } =
     useAppSelector((s) => s.filters);
+    console.log({selectedCategories})
   const { data, isLoading, isError, error } = usePosts();
 
   const filteredAndSortedPosts = useMemo(() => {
@@ -139,10 +140,12 @@ function App() {
           <MobileFilters>
             <Dropdown label="Category">
               <Categories
-                selectedCategories={selectedCategories}
-                onSelectCategory={(id: string) => {
-                  dispatch(toggleCategory(id));
-                }}
+                isMobile
+
+                // tempCategories={tempCategories}
+                // onSelectCategory={(id: string) => {
+                //   dispatch(toggleCategory(id));
+                // }}
               />
             </Dropdown>
 
@@ -164,7 +167,7 @@ function App() {
 
         <Container>
           {filteredAndSortedPosts.length === 0 ? (
-            <p>There's no result</p>
+            <p>No results.</p>
           ) : (
             filteredAndSortedPosts.map((post) => (
               <PostCard

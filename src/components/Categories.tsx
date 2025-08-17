@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { setCategories } from "../store/filtersSlice";
 
 type Category = {
   name: string;
@@ -68,6 +70,7 @@ const Item = styled.button<{ selected?: boolean }>`
 const Categories = ({
   setTempCategories,
   tempCategories,
+  isMobile
  
 }: CategoriesProps) => {
   const {
@@ -87,6 +90,14 @@ const Categories = ({
     staleTime: 1000 * 60 * 5,
   });
 
+  const { selectedCategories } =
+  useAppSelector((s) => s.filters);
+  const dispatch = useAppDispatch();
+
+
+
+
+
   if (isLoading) return <div>loading...</div>;
   if (isError) return <div>Error: {error.message}</div>;
 
@@ -95,13 +106,27 @@ const Categories = ({
       <Title>Category</Title>
       <List>
         {data.map((category) => {
-          const isSelected = tempCategories?.includes(category.id) ?? false;
+          const isSelected = isMobile ? selectedCategories?.includes(category.id) ?? false : tempCategories?.includes(category.id) ?? false;
           return (
             <li key={category.id}>
               <Item
                 selected={isSelected}
                 onClick={() => {
-                  setTempCategories(category.id);
+
+                  if (isMobile) {
+
+                    if (!selectedCategories.includes(category.id)) {
+                      const updatedCategories = [...selectedCategories, category.id]
+                      dispatch(setCategories(updatedCategories));
+
+                    } else {
+                      const updatedCategories = selectedCategories.filter((cat) => category.id !== cat)
+                      dispatch(setCategories(updatedCategories));
+                    }
+
+                  } else {
+                    setTempCategories(category.id);
+                  }
                 }}
               >
                 {category.name}
