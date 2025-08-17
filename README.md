@@ -16,7 +16,7 @@ The goal is to demonstrate modern frontend development skills with React, implem
 - [x] Post page with full content and related data  
 - [x] API consumption with DWS data integration  
 
-👉 [Check out the live project](https://dws-blog-black.vercel.app/)
+👉 [Live project](https://dws-blog-black.vercel.app/)
 
 <p align="center">
   <figure style="display:inline-block; margin:10px;">
