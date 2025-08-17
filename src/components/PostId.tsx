@@ -17,8 +17,7 @@ const Container = styled.div`
 
 const TopBar = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column
 `;
 
 const Title = styled.h1`
@@ -48,8 +47,8 @@ const Avatar = styled.img`
 `;
 
 const Info = styled.div`
-display: flex;
-flex-direction: column;
+  display: flex;
+  flex-direction: column;
 `;
 
 const AuthorName = styled.span`
@@ -104,6 +103,15 @@ const Divider = styled.hr`
   margin: 32px 0;
 `;
 
+const BackButton = styled(Button)`
+  max-width: 96px;
+  width: 100%;
+  @media (max-width: 658px) {
+    margin-bottom: 16px;
+  }
+  
+`;
+
 const SectionTitle = styled.h2`
   font-size: clamp(20px, 2.5vw, 28px);
   margin: 0 0 16px;
@@ -146,58 +154,56 @@ const PostId = () => {
   return (
     <Wrapper>
       <Navbar />
-      <Container>
-        <TopBar>
-          <Button
-            variant="secondary"
-            px="16px"
-            py="12px"
-            iconLeft={<FaArrowLeft style={{ marginTop: 6 }} />}
-            onClick={() => navigate(-1)}
-          >
-            Back
-          </Button>
-          <div />
-        </TopBar>
+      <TopBar>
+        <BackButton
+          variant="secondary"
+          px="16px"
+          py="12px"
+          iconLeft={<FaArrowLeft style={{ marginTop: 6 }} />}
+          onClick={() => navigate(-1)}
+        >
+          Back
+        </BackButton>
+        <Container>
+          <Title>{data.title}</Title>
 
-        <Title>{data.title}</Title>
+          <Meta>
+            <Avatar src={avatar} alt={data.author?.name} />
+            <Info>
+              <span>
+                Written by: <AuthorName>{data.author?.name}</AuthorName>
+              </span>
+              <span style={{ color: "var(--neutral-dark, #7f8185)" }}>
+                {formattedDate(date)}
+              </span>
+            </Info>
+          </Meta>
 
-        <Meta>
-          <Avatar src={avatar} alt={data.author?.name} />
-          <Info>
-            <span>
-              Written by: <AuthorName>{data.author?.name}</AuthorName>
-            </span>
-            <span style={{ color: "var(--neutral-dark, #7f8185)" }}>
-              {formattedDate(date)}
-            </span>
-          </Info>
-        </Meta>
+          {data.thumbnail_url && (
+            <Cover src={data.thumbnail_url} alt={data.title} />
+          )}
 
-        {data.thumbnail_url && (
-          <Cover src={data.thumbnail_url} alt={data.title} />
-        )}
+          <Prose dangerouslySetInnerHTML={{ __html: data.content }} />
 
-        <Prose dangerouslySetInnerHTML={{ __html: data.content }} />
+          <Divider />
 
-        <Divider />
-
-        <SectionTitle>Latest articles</SectionTitle>
-        <Grid>
-          {latestByAuthor.map((p) => (
-            <PostCard
-              key={p.id}
-              id={p.id}
-              title={p.title}
-              image={p.thumbnail_url}
-              author={p.author?.name}
-              date={p.createdAt}
-              categories={p.categories}
-              text={p.content}
-            />
-          ))}
-        </Grid>
-      </Container>
+          <SectionTitle>Latest articles</SectionTitle>
+          <Grid>
+            {latestByAuthor.map((p) => (
+              <PostCard
+                key={p.id}
+                id={p.id}
+                title={p.title}
+                image={p.thumbnail_url}
+                author={p.author?.name}
+                date={p.createdAt}
+                categories={p.categories}
+                text={p.content}
+              />
+            ))}
+          </Grid>
+        </Container>
+      </TopBar>
     </Wrapper>
   );
 };

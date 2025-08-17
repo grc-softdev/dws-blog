@@ -145,11 +145,11 @@ function App() {
         <Title>DWS Blog</Title>
         <RightArea>
           <MobileFilters>
-            <Dropdown label="Category">
+            <Dropdown isMobile label="Category">
               <Categories isMobile />
             </Dropdown>
 
-            <Dropdown label="Author">
+            <Dropdown isMobile label="Author">
               <Authors isMobile />
             </Dropdown>
           </MobileFilters>
